@@ -10,7 +10,7 @@ public class Acao extends Investimento {
     
     public void rende(int diasPassados){
            // Exemplo de método
-           setMontante(getMontante()*2);
+           setMontante((float) (Math.pow(1.01, diasPassados)*getMontante()));
     }
 
 }
