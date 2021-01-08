@@ -9,7 +9,7 @@ import java.rmi.UnexpectedException;
 
 public class WebScraping {
     // Classe simples para pegar preços das Ações
-    // Pega o código fonte do link que é a pesquisa no google do preço da ação e retira o preço desse código
+    // Pega o código-fonte do link que é a pesquisa no google do preço da ação e retira o preço desse código
 
     public static String pull(String url_google) throws Exception {
         // Instancia objeto URL com a url da pesquisa do preço da ação no google (url da ação guardada em Enum Acoes)
@@ -21,6 +21,7 @@ public class WebScraping {
 
         String preco; // Inicializa a String
         String linha = buff.readLine(); // Transforma a linha do código em String
+
         while(linha != null){ // Percorre todas as linhas do código-fonte
             String precedePreco = "<span class=\"qXLe6d epoveb\">  <span class=\"fYyStc\">"; // Pedaço de código-fonte que sempre antecede o preço da ação
 
@@ -40,7 +41,7 @@ public class WebScraping {
             }
             linha = buff.readLine(); // Lê a próxima linha do código-fonte
         }
-        // Preço não foi encontrado no código fonte
+        // Preço não foi encontrado no código fonte, pois o "return preco" não foi executado dentro do while
         throw new Exception("Preço não encontrado");
     }
 }
