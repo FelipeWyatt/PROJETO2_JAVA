@@ -7,7 +7,6 @@ public class Admin {
 	private static ArrayList<Cliente> clientes = new ArrayList<Cliente>(); // Array para alocar todos os clientes criados
 	private static final int id = 0; // O ID do Admin eh por padrao definido como 0
 	private static String senha = "abcd";
-	private static String nome = "Bob"; // O nome e a senha sao pre-definidos
 
 	// METODOS
 	// Admin pode criar um cliente
@@ -76,13 +75,6 @@ public class Admin {
 	}
 	public static void setSenha(String novaSenha) {
 		senha = novaSenha;
-	}
-
-	public static String getNome() {
-		return nome;
-	}
-	public static void setNome(String novoNome) {
-		nome = novoNome;
 	}
 
 	public static int getId() {
