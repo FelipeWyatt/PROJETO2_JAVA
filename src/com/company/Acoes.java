@@ -23,9 +23,11 @@ public enum Acoes {
         String preco = "-";
         try {
             preco = WebScraping.pull(this.url);
-        } catch (IOException erro) {
-            System.out.println("Erro de conexão: " + erro);
+        } catch (IOException erroConexao) {
+            System.out.println("Erro de conexão: " + erroConexao);
             //erro.printStackTrace();
+        } catch (Exception erroGeral){
+            System.out.println("Erro: " + erroGeral);
         }
         return preco;
     }
