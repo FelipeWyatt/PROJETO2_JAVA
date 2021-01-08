@@ -17,9 +17,17 @@ public enum Acoes {
         this.url = url;
     }
 
-    public String precoTempoReal() throws IOException {
+    public String precoTempoReal() {
         // Aciona o WebScraping para pegar o preço da Ação em tempo real
-        return WebScraping.pull(this.url);
+        // Trata execeção do WebScraping
+        String preco = "-";
+        try {
+            preco = WebScraping.pull(this.url);
+        } catch (IOException erro) {
+            System.out.println("Erro de conexão: " + erro);
+            //erro.printStackTrace();
+        }
+        return preco;
     }
 
     public String getEmpresa() { return empresa; }

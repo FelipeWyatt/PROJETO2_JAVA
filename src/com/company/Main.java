@@ -7,7 +7,7 @@ public class Main {
     // Tudo static porque Main nao e instanciada
     public static GregorianCalendar dataAtual = new GregorianCalendar(2020, 11, 7);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         System.out.println("Ação da " + Acoes.TESLA.getEmpresa() + " (" + Acoes.TESLA.getTicker() + ") em tempo Real: R$" + Acoes.TESLA.precoTempoReal());
         System.out.println("Ação da " + Acoes.APPLE.getEmpresa() + " (" + Acoes.APPLE.getTicker() + ") em tempo Real: R$" + Acoes.APPLE.precoTempoReal());
 
