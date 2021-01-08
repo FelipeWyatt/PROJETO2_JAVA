@@ -8,7 +8,7 @@ public class Main {
     public static GregorianCalendar dataAtual = new GregorianCalendar(2020, 11, 7);
 
     public static void main(String[] args) throws IOException {
-        WebScraping.pull();
+        System.out.println("Ação da Tesla (TSLA34) em tempo Real: R$" + WebScraping.pull());
         /*
         float valor;
         boolean v;
