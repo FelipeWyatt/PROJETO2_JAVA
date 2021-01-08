@@ -1,4 +1,5 @@
 package com.company;
+import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
@@ -6,7 +7,9 @@ public class Main {
     // Tudo static porque Main nao e instanciada
     public static GregorianCalendar dataAtual = new GregorianCalendar(2020, 11, 7);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        WebScraping.pull();
+        /*
         float valor;
         boolean v;
 
@@ -203,6 +206,7 @@ public class Main {
         System.out.println(c2.getConta()); 
         System.out.println(conta3);
         System.out.println(conta4); //Mostrara como rendeu os investimentos durante o tempo q passou entre uma data e outra
+        */
     }
 
     public static void rendeTudo(GregorianCalendar ultimaVezQueRendeu){
