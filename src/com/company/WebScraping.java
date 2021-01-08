@@ -15,7 +15,7 @@ public class WebScraping {
         // Instancia objeto URL com a url da pesquisa do preço da ação no google (url da ação guardada em Enum Acoes)
         URL url = new URL(url_google);
         URLConnection urlCon = url.openConnection();
-        urlCon.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)"); // Evita erros de conexão
+        urlCon.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
         InputStreamReader inStream = new InputStreamReader(urlCon.getInputStream());
         BufferedReader buff = new BufferedReader(inStream); // Texto do código-fonte da página
 
