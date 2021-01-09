@@ -1,17 +1,15 @@
 package com.company;
 
-import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.rmi.UnexpectedException;
 
 public class DadosWeb {
-    // Classe simples para pegar preços das Ações
-    // Pega o código-fonte do link que é a pesquisa no google do preço da ação e retira o preço desse código
+    // Classe para pegar dados da web
 
     public static String obtemPrecoAcao(String url_google) throws Exception {
+        // Pega o código-fonte do link que é a pesquisa no google do preço da ação e retira o preço desse código
         // Instancia objeto URL com a url da pesquisa do preço da ação no google (url da ação guardada em Enum Acoes)
         URL url = new URL(url_google);
         URLConnection urlCon = url.openConnection();

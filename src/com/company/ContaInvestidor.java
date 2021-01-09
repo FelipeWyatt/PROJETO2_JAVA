@@ -15,7 +15,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     }
 
     // METODOS
-    public boolean criarInvestimentoRF (AtivosRF ativo, float montante) {
+    public boolean comprarRF(AtivosRF ativo, float montante) {
     	if (getDono().getStatus() && getSaldo() >= montante) {
 	        RendaFixa novo_investimento = new RendaFixa(montante, new GregorianCalendar(), ativo);
 	        investimentos.add(novo_investimento);
@@ -26,9 +26,32 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     	}
     }
 
-    // Retira o dinheiro aplicado em um investimento determinado, rendendo uma quantidade propoRcional ao tempo que o
-    //dinheiro ficou aplicado. Caso a retirada Seja feita antes da data de vencimento do ativo, uma penalidade é aplicada
-    public void resgatarInvestimento(Investimento investimento) {
+
+    public float venderRF(RendaFixa investimento) {
+        // Retira o dinheiro aplicado em um investimento de renda fixa, rendendo uma quantidade propoRcional ao tempo que o
+        //dinheiro ficou aplicado. Caso a retirada Seja feita antes da data de vencimento do ativo, uma penalidade é aplicada
+
+        if(getDono().getStatus()){
+            getInvestimentos().remove(investimento);
+            GregorianCalendar dataCompra = investimento.getDataCompra();
+            GregorianCalendar dataVencimento = ((RendaFixa) investimento).getAtivo().getVencimento();
+
+            if (Data.diasEntre(dataCompra, dataVencimento) <= 0) { // verificar ordem das datas
+                // Entao esta sendo resgatado depois do prazo, sem penalidade
+                setSaldo(getSaldo() + investimento.getMontante());
+                return investimento.getMontante();
+            } else {
+                // Entao esta sendo resgatado antes do prazo, com penalidade
+                float montante = investimento.getMontante();
+                float valorPenalidade = montante * ((RendaFixa) investimento).getAtivo().getPenalidade();
+                setSaldo(getSaldo() + montante - valorPenalidade);
+                return montante - valorPenalidade;
+            }
+        }
+
+        return 0;
+        /*
+        // Código antigo, polimosfismo pensado anteriormente nesse método náo é viavel
     	if (getDono().getStatus()) {
             // Metodo mais geral que podera ser adicionado outros tipos de investimentos
             if (investimento instanceof RendaFixa) { // Tem regras de resgate diferentes para cada tipo de investimento
@@ -51,7 +74,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
             }
 
             // Para outro tipo de investimento adicionar else if (investimento instanceof tipoInvestimento)
-        }
+        }*/
     }
 
     @Override
@@ -60,11 +83,13 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         String out = "CONTA INVESTIDOR \n";
         out += super.toString();
         out += "Montante total investido: R$" + d1.format(getMontanteTotal()) + "\n";
-        out += mostraAtivos();
+        out += verInvestimentos();
         return out;
     }
 
-    public String mostraAtivos() { // Chama os toString de cada investimento, mais geral
+    // SEPARAR A LISTA DE INVESTIMENTOS ENTRE AÇÕES E RF
+    // MOSTRAR A LISTA ORDENADA COM Collections.sort QUE USA INTERFACE Comparable E MÉTODO .compareTo()
+    public String verInvestimentos() { // Chama os toString de cada investimento, mais geral
         DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
         if (getDono().getStatus()) {
             String out = "Investimentos:\n";
@@ -90,7 +115,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         return (float) Math.round(total*100)/100; // Arredonda para 2 casas decimais
     }
 
-    public String getNomeAtivo() {
+    public String getNomesAtivos() {
         String out = "";
         for (Investimento i : investimentos){
             if (i instanceof RendaFixa) {
