@@ -29,8 +29,8 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
 
     public float venderRF(RendaFixa investimento) {
-        // Retira o dinheiro aplicado em um investimento de renda fixa, rendendo uma quantidade propoRcional ao tempo que o
-        //dinheiro ficou aplicado. Caso a retirada Seja feita antes da data de vencimento do ativo, uma penalidade Ã© aplicada
+        // Retira o dinheiro aplicado em um investimento de renda fixa, rendendo uma quantidade proporcional ao tempo que o
+        //dinheiro ficou aplicado. Caso a retirada Seja feita antes da data de vencimento do ativo, uma penalidade é aplicada
 
         if(getDono().getStatus()){
             getInvestimentos().remove(investimento);
@@ -52,7 +52,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
         return 0;
         /*
-        // CÃ³digo antigo, polimosfismo pensado anteriormente nesse mÃ©todo nÃ¡o Ã© viavel
+        // Código antigo, polimosfismo pensado anteriormente nesse método não é viavel
     	if (getDono().getStatus()) {
             // Metodo mais geral que podera ser adicionado outros tipos de investimentos
             if (investimento instanceof RendaFixa) { // Tem regras de resgate diferentes para cada tipo de investimento
@@ -91,7 +91,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     public String verInvestimentos() { // Chama os toString de cada investimento, mais geral
         DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
         if (getDono().getStatus()) {
-        	Collections.sort(investimentos); // ordena a lista do maior para o menor montante
+            Collections.sort(investimentos); // ordena a lista do maior para o menor montante
             String out = "Investimentos:\n";
             out += "* Renda Fixa:\n"; // Primeiro printa os investimentos de RF
             for (Investimento i : investimentos){        
