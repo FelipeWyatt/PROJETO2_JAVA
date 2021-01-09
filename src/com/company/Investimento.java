@@ -1,10 +1,12 @@
 package com.company;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 
-public class Investimento { // Classe mae para qualquer tipo de investimento, no futuro serao adicionados outros tipos alem de RendaFixa
+public class Investimento implements Serializable { // Classe mae para qualquer tipo de investimento, no futuro serao adicionados outros tipos alem de RendaFixa
 	// ATRIBUTOS
+	private static final long serialVersionUID = 302L;
 	private float montante; // quanto foi investido
 	private GregorianCalendar dataCompra;
 	

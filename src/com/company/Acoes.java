@@ -30,14 +30,12 @@ public enum Acoes {
         } catch (IOException erroConexao) {
             System.out.println("Erro de conexão: " + erroConexao);
             //erro.printStackTrace();
-            return -1f;
         } catch (NumberFormatException erroParseFloat){
             System.out.println("Erro formato do float: " + erroParseFloat);
-            return -1f;
         } catch (Exception erroGeral){
             System.out.println("Erro: " + erroGeral);
-            return -1f;
         }
+        return -1f;
     }
 
 

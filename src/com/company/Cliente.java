@@ -1,9 +1,11 @@
 package com.company;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
-public class Cliente {
+public class Cliente implements Serializable {
     // ATRIBUTOS
+    private static final long serialVersionUID = 300L;
     private static int numClientes = 0; // Variavel estatica, pois o numero de clientes criados e o mesmo 
     private final int id;
     private String senha;
