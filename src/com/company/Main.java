@@ -8,11 +8,23 @@ public class Main {
     public static GregorianCalendar dataAtual = new GregorianCalendar(2020, 11, 7);
 
     public static void main(String[] args) {
-        resgataClientes();
-        for(Cliente c : Admin.getClientes()){
-            System.out.println(c);
+        if(resgataClientes()){
+            System.out.println("Dados resgatados com Sucesso!");
+        } else {
+            System.out.println("Erro! Dados não foram resgatados.");
         }
-        salvaClientes();
+
+        for(Cliente c : Admin.getClientes()){
+            System.out.println(c.getConta());
+        }
+
+
+        if(salvaClientes()){
+            System.out.println("Dados salvos com Sucesso!");
+        } else {
+            System.out.println("Erro! Dados não foram salvos.");
+        }
+
         /*
         for(Acoes acao : Acoes.values()){
             System.out.println("Ação da " + acao.getEmpresa() + " (" + acao.getTicker() + ") em tempo Real: R$" + acao.precoTempoReal());
@@ -279,27 +291,34 @@ public class Main {
             return true;
         } catch(IOException erro){
             System.out.println("Erro escrevendo os clientes");
-            return false;
         }
+        return false;
     }
 
     public static boolean resgataClientes(){
         // Resgata os objetos Clientes guardados no Arquivo e associa à Admin.clientes
         String filename = "clientes.dat";
+        int maxIdCliente = 0, maxIdConta = 0;
         try{
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
             while(true){
-                Admin.adicionaCliente((Cliente) input.readObject());
+                Cliente c = (Cliente) input.readObject();
+                Admin.adicionaCliente(c);
+                if(c.getId() > maxIdCliente) maxIdCliente = c.getId();
+                if(c.getConta().getId() > maxIdConta) maxIdConta = c.getConta().getId();
             }
         } catch(EOFException endOfFileException){
             // Arquivo terminou de ser lido
+            // Atualiza atributos de classe
+            Cliente.setNumClientes(maxIdCliente);
+            ContaBancaria.setNumContas(maxIdConta);
             return true;
         } catch (FileNotFoundException e) {
-            System.out.println("Erro 1 lendo");
+            System.out.println("Erro 1 lendo arquivo clientes.dat");
         } catch (IOException e) {
-            System.out.println("Erro 2 lendo");
+            System.out.println("Erro 2 lendo arquivo clientes.dat");
         } catch (ClassNotFoundException e) {
-            System.out.println("Erro 3 lendo");
+            System.out.println("Erro 3 lendo arquivo clientes.dat");
         }
         return false;
     }
