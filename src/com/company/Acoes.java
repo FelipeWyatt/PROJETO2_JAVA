@@ -19,20 +19,27 @@ public enum Acoes {
         this.url = url;
     }
 
-    public String precoTempoReal() {
+
+    public float precoTempoReal() {
         // Aciona o WebScraping para pegar o preço da Ação em tempo real
         // Trata exceção do WebScraping
-        String preco = "-";
         try {
-            preco = DadosWeb.obtemPrecoAcao(this.url);
+            String precoString = DadosWeb.obtemPrecoAcao(this.url);
+            float preco = Float.parseFloat(precoString.replace(",", "."));
+            return preco;
         } catch (IOException erroConexao) {
             System.out.println("Erro de conexão: " + erroConexao);
             //erro.printStackTrace();
+            return -1f;
+        } catch (NumberFormatException erroParseFloat){
+            System.out.println("Erro formato do float: " + erroParseFloat);
+            return -1f;
         } catch (Exception erroGeral){
             System.out.println("Erro: " + erroGeral);
+            return -1f;
         }
-        return preco;
     }
+
 
     public String getEmpresa() { return empresa; }
 
