@@ -1,4 +1,4 @@
-package com.company;
+//package com.company;
 
 public enum Sexo {
 	MASCULINO ("M", "Masculino"),

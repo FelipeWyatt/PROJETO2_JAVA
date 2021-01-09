@@ -1,4 +1,4 @@
-package com.company;
+//package com.company;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -10,7 +10,6 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     //METODO CONSTRUTOR
     public ContaInvestidor (float saldo, Cliente dono) {
         super(saldo, dono);
-
         investimentos = new ArrayList<Investimento>();
     }
 
@@ -75,6 +74,22 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
             // Para outro tipo de investimento adicionar else if (investimento instanceof tipoInvestimento)
         }*/
+    }
+
+    public void rendeConta (int diasPassados) {
+        // deve render os montantes de todos os investimentos da conta
+        for(Investimento i : investimentos) {
+            if (i instanceof RendaFixa){ // RendaFixa rende de uma forma especifica
+                AtivosRF ativo = ((RendaFixa) i).getAtivo();
+
+                // Montante apos n dias = montante * (1 + rentabilidade)^n
+                float novoMontante = (float) (i.getMontante() * Math.pow(1 + ativo.getRentabilidade(), diasPassados));
+                novoMontante = (float) Math.round(novoMontante*100)/100; // Arredonda pra duas casas decimais
+                i.setMontante(novoMontante);
+            }
+        }
+        // atualiza o dinheiroTotal do Cliente, que sera o saldo da conta + o dinheiro investido
+        getDono().setDinheiroTotal(getSaldo() + getMontanteTotal());
     }
 
     @Override

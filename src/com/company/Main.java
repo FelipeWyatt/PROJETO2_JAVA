@@ -1,4 +1,5 @@
-package com.company;
+//package com.company;
+
 import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -8,12 +9,13 @@ public class Main {
     public static GregorianCalendar dataAtual = new GregorianCalendar(2020, 11, 7);
 
     public static void main(String[] args) {
+
         // acoes
         for(Acoes acao : Acoes.values()){
             System.out.println("Ação da " + acao.getEmpresa() + " (" + acao.getTicker() + ") em tempo Real: R$" + acao.precoTempoReal());
         }
 
-        /*
+
         float valor;
         boolean v;
 
@@ -29,6 +31,7 @@ public class Main {
         c2.abrirConta(2); // Conta Poupanca
         c3.abrirConta(3); // Conta Investidor
         c4.abrirConta(1); // Conta Corrente
+
 
         // clinte c5 definido com entradas do usuario
         Scanner entrada = new Scanner(System.in);
@@ -211,42 +214,20 @@ public class Main {
         System.out.println(conta3);
         System.out.println(conta4); //Mostrara como rendeu os investimentos durante o tempo q passou entre uma data e outra
 
-         */
+
 
     }
 
     public static void rendeTudo(GregorianCalendar ultimaVezQueRendeu){
         // Atualiza todos os valores de todas as contas de todos os clientes
         // Deve ser chamado uma vez ao dia. Para fins de teste do sistema foi criado o metodo Main.setDataAtual
-        long diasPassados = Data.diasEntre(ultimaVezQueRendeu, dataAtual);
+        int diasPassados = (int) Data.diasEntre(ultimaVezQueRendeu, dataAtual); //por que long?
 
         for(Cliente cliente : Admin.getClientes()){
             // Percorre todos os clientes, que estao guardados no ArrayList do Admin
             if(cliente.getStatus()){ // Se cliente esta ativo, rende sua conta
                 ContaBancaria conta = cliente.getConta();
-                if (conta instanceof ContaPoupanca){ // ContaPoupanca rende diferente de ContaInvestidor
-                    // Saldo apos n dias = saldo*(1 + rendimentoDiario)^n
-                    float novoSaldo = (float) (conta.getSaldo() * Math.pow((1 + ContaPoupanca.getRendimentoDiario()), diasPassados));
-
-                    novoSaldo = (float) Math.round(novoSaldo*100)/100; // Arredonda pra duas casas decimais
-                    conta.setSaldo(novoSaldo);
-                    // atualiza o dinheiroTotal do Cliente
-                    cliente.setDinheiroTotal(novoSaldo);
-                } else if (conta instanceof ContaInvestidor){
-                    // deve render os montantes de todos os investimentos da conta
-                    for(Investimento i : ((ContaInvestidor) conta).getInvestimentos()){
-                        if (i instanceof RendaFixa){ // RendaFixa rende de uma forma especifica
-                            AtivosRF ativo = ((RendaFixa) i).getAtivo();
-                            // Montante apos n dias = montante * (1 + rentabilidade)^n
-                            float novoMontante = (float) (i.getMontante() * Math.pow(1 + ativo.getRentabilidade(), diasPassados));
-                            novoMontante = (float) Math.round(novoMontante*100)/100; // Arredonda pra duas casas decimais
-                            i.setMontante(novoMontante);
-                        }
-                    }
-                    // atualiza o dinheiroTotal do Cliente, que sera o saldo da conta + o dinheiro investido
-                    cliente.setDinheiroTotal(conta.getSaldo() + ((ContaInvestidor) conta).getMontanteTotal());
-
-                } // Conta Corrente nao rende nada
+                conta.rendeConta(diasPassados);
             }
         }
     }
@@ -257,6 +238,4 @@ public class Main {
         dataAtual = novaData;
         rendeTudo(dataAntiga); // Compara com a data atual
     }
-
-
 }

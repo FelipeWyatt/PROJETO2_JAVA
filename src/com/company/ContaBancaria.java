@@ -1,8 +1,8 @@
-package com.company;
+//package com.company;
 
 import java.text.DecimalFormat;
 
-public class ContaBancaria {
+public abstract class ContaBancaria {
     // ATRIBUTOS
     private static int numContas = 0;
     private final int id; // Numero/login da conta
@@ -49,6 +49,8 @@ public class ContaBancaria {
     		return false;
     	}
     }
+
+    public abstract void rendeConta (int diasPassados);
 
     @Override
     public String toString () {
