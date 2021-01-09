@@ -2,6 +2,7 @@ package com.company;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 
 public class ContaInvestidor extends ContaBancaria { // Tem acesso a investimentos
@@ -29,7 +30,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
     public float venderRF(RendaFixa investimento) {
         // Retira o dinheiro aplicado em um investimento de renda fixa, rendendo uma quantidade propoRcional ao tempo que o
-        //dinheiro ficou aplicado. Caso a retirada Seja feita antes da data de vencimento do ativo, uma penalidade é aplicada
+        //dinheiro ficou aplicado. Caso a retirada Seja feita antes da data de vencimento do ativo, uma penalidade Ã© aplicada
 
         if(getDono().getStatus()){
             getInvestimentos().remove(investimento);
@@ -51,7 +52,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
         return 0;
         /*
-        // Código antigo, polimosfismo pensado anteriormente nesse método náo é viavel
+        // CÃ³digo antigo, polimosfismo pensado anteriormente nesse mÃ©todo nÃ¡o Ã© viavel
     	if (getDono().getStatus()) {
             // Metodo mais geral que podera ser adicionado outros tipos de investimentos
             if (investimento instanceof RendaFixa) { // Tem regras de resgate diferentes para cada tipo de investimento
@@ -87,17 +88,22 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         return out;
     }
 
-    // SEPARAR A LISTA DE INVESTIMENTOS ENTRE AÇÕES E RF
-    // MOSTRAR A LISTA ORDENADA COM Collections.sort QUE USA INTERFACE Comparable E MÉTODO .compareTo()
     public String verInvestimentos() { // Chama os toString de cada investimento, mais geral
         DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
         if (getDono().getStatus()) {
+        	Collections.sort(investimentos); // ordena a lista do maior para o menor montante
             String out = "Investimentos:\n";
-            for (Investimento i : investimentos){
+            out += "* Renda Fixa:\n"; // Primeiro printa os investimentos de RF
+            for (Investimento i : investimentos){        
                 if (i instanceof RendaFixa) {
                     out += "- " + ((RendaFixa) i).getAtivo().getNome() + ": R$" + d1.format(i.getMontante()) + "\n";
                 }
-                // Para outro tipo de investimento adicionar else if (investimento instanceof tipoInvestimento)
+            }
+            out += "* Ações:\n"; // Depois printa os investimentos de Acao
+            for (Investimento i : investimentos){               	
+                if (i instanceof Acao) {
+                	out += "- " + ((Acao) i).getAcao().getEmpresa() + ": R$" + d1.format(i.getMontante()) + "\n";
+                }
             }
             return out;
         }
@@ -109,19 +115,25 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     public float getMontanteTotal () {
         float total = 0;
         for (Investimento i : investimentos) {
-            RendaFixa aux = (RendaFixa) i;
-            total += aux.getMontante();
+            total += i.getMontante();
         }
         return (float) Math.round(total*100)/100; // Arredonda para 2 casas decimais
     }
 
     public String getNomesAtivos() {
         String out = "";
-        for (Investimento i : investimentos){
+        Collections.sort(investimentos);
+        out += "* Renda Fixa:\n";
+        for (Investimento i : investimentos){        
             if (i instanceof RendaFixa) {
-                out += ((RendaFixa) i).getAtivo().getNome() + "   ";
+            	out += ((RendaFixa) i).getAtivo().getNome() + "   ";
             }
-            // Para outro tipo de investimento adicionar else if (investimento instanceof tipoInvestimento)
+        }
+        out += "\n* Ações:\n";
+        for (Investimento i : investimentos){               	
+            if (i instanceof Acao) {
+            	out += ((Acao) i).getAcao().getEmpresa() + "   ";
+            }
         }
         return out;
     }
