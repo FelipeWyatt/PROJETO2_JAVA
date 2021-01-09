@@ -1,5 +1,5 @@
 package com.company;
-import java.io.IOException;
+import java.io.*;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
@@ -8,10 +8,16 @@ public class Main {
     public static GregorianCalendar dataAtual = new GregorianCalendar(2020, 11, 7);
 
     public static void main(String[] args) {
-        // acoes
+        resgataClientes();
+        for(Cliente c : Admin.getClientes()){
+            System.out.println(c);
+        }
+        salvaClientes();
+        /*
         for(Acoes acao : Acoes.values()){
             System.out.println("Ação da " + acao.getEmpresa() + " (" + acao.getTicker() + ") em tempo Real: R$" + acao.precoTempoReal());
         }
+         */
 
         /*
         float valor;
@@ -211,9 +217,11 @@ public class Main {
         System.out.println(conta3);
         System.out.println(conta4); //Mostrara como rendeu os investimentos durante o tempo q passou entre uma data e outra
 
-         */
+        */
 
     }
+
+
 
     public static void rendeTudo(GregorianCalendar ultimaVezQueRendeu){
         // Atualiza todos os valores de todas as contas de todos os clientes
@@ -258,5 +266,42 @@ public class Main {
         rendeTudo(dataAntiga); // Compara com a data atual
     }
 
+    public static boolean salvaClientes(){
+        // Guarda os dados de todos os clientes do sistema e consequentemente das contas e investimentos
+        String filename = "clientes.dat";
+        try{
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
+            for(Cliente c : Admin.getClientes()){
+                output.writeObject(c);
+                output.flush();
+            }
+            output.close();
+            return true;
+        } catch(IOException erro){
+            System.out.println("Erro escrevendo os clientes");
+            return false;
+        }
+    }
+
+    public static boolean resgataClientes(){
+        // Resgata os objetos Clientes guardados no Arquivo e associa à Admin.clientes
+        String filename = "clientes.dat";
+        try{
+            ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
+            while(true){
+                Admin.adicionaCliente((Cliente) input.readObject());
+            }
+        } catch(EOFException endOfFileException){
+            // Arquivo terminou de ser lido
+            return true;
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro 1 lendo");
+        } catch (IOException e) {
+            System.out.println("Erro 2 lendo");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Erro 3 lendo");
+        }
+        return false;
+    }
 
 }

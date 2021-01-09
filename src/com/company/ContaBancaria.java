@@ -1,9 +1,11 @@
 package com.company;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
-public class ContaBancaria {
+public class ContaBancaria implements Serializable {
     // ATRIBUTOS
+    private static final long serialVersionUID = 301L;
     private static int numContas = 0;
     private final int id; // Numero/login da conta
     private float saldo; //saldo disponivel para saques e investimentos. Diferente do dinheiro investido (para contas do tipo investidor)
