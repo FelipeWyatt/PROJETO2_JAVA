@@ -175,23 +175,23 @@ public class Main {
 
         // ContaInvestidor.criarInvestimentoRF retorna boolean
         ContaInvestidor conta3 = (ContaInvestidor) c3.getConta();
-        if (conta3.criarInvestimentoRF(AtivosRF.TESOURO_SELIC, 500f)) System.out.println("Novo investimento criado com sucesso!");
+        if (conta3.comprarRF(AtivosRF.TESOURO_SELIC, 500f)) System.out.println("Novo investimento criado com sucesso!");
         else System.out.println("Nao foi possivel criar o investimento!");
-        if (conta3.criarInvestimentoRF(AtivosRF.CDB_BANCO_INTER, 1000f)) System.out.println("Novo investimento criado com sucesso!");
+        if (conta3.comprarRF(AtivosRF.CDB_BANCO_INTER, 1000f)) System.out.println("Novo investimento criado com sucesso!");
         else System.out.println("Nao foi possivel criar o investimento!");
 
         System.out.println(conta3); // Foi investido 1500 em investimento, entao sera tirado 1500 do saldo disponivel e adicionado 1550 no montante investido
 
         ContaInvestidor conta4 = (ContaInvestidor) c4.getConta();
-        if (conta4.criarInvestimentoRF(AtivosRF.CDB_BANCO_ITAU, 1300f)) System.out.println("Novo investimento criado com sucesso!");
+        if (conta4.comprarRF(AtivosRF.CDB_BANCO_ITAU, 1300f)) System.out.println("Novo investimento criado com sucesso!");
         else System.out.println("Nao foi possivel criar o investimento!");
-        if (conta4.criarInvestimentoRF(AtivosRF.LCI_CAIXA, 900f)) System.out.println("Novo investimento criado com sucesso!");
+        if (conta4.comprarRF(AtivosRF.LCI_CAIXA, 900f)) System.out.println("Novo investimento criado com sucesso!");
         else System.out.println("Nao foi possivel criar o investimento!");
 
         System.out.println(conta4);
 
         System.out.println("-> ContaInvestidor.resgatarInvestimento()");
-        conta3.resgatarInvestimento(conta3.getInvestimentos().get(1));
+        conta3.venderRF((RendaFixa) conta3.getInvestimentos().get(1));
         System.out.println(conta3); // Conseguira resgatar 95% do valor investido, pois retirou antes do prazo e sofre penalidade
 
         System.out.println("*** Simulando passagem do tempo, mostrando rendimentos ***");
@@ -210,7 +210,9 @@ public class Main {
         System.out.println(c2.getConta()); 
         System.out.println(conta3);
         System.out.println(conta4); //Mostrara como rendeu os investimentos durante o tempo q passou entre uma data e outra
-        */
+
+         */
+
     }
 
     public static void rendeTudo(GregorianCalendar ultimaVezQueRendeu){
