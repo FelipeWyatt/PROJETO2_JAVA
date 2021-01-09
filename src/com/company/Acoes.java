@@ -24,7 +24,7 @@ public enum Acoes {
         // Trata exceção do WebScraping
         String preco = "-";
         try {
-            preco = WebScraping.pull(this.url);
+            preco = DadosWeb.obtemPrecoAcao(this.url);
         } catch (IOException erroConexao) {
             System.out.println("Erro de conexão: " + erroConexao);
             //erro.printStackTrace();

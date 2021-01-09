@@ -7,11 +7,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.rmi.UnexpectedException;
 
-public class WebScraping {
+public class DadosWeb {
     // Classe simples para pegar preços das Ações
     // Pega o código-fonte do link que é a pesquisa no google do preço da ação e retira o preço desse código
 
-    public static String pull(String url_google) throws Exception {
+    public static String obtemPrecoAcao(String url_google) throws Exception {
         // Instancia objeto URL com a url da pesquisa do preço da ação no google (url da ação guardada em Enum Acoes)
         URL url = new URL(url_google);
         URLConnection urlCon = url.openConnection();
