@@ -1,7 +1,8 @@
-//package com.company;
+package com.company;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 
 public class ContaInvestidor extends ContaBancaria { // Tem acesso a investimentos
@@ -25,9 +26,8 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     	}
     }
 
-
     public float venderRF(RendaFixa investimento) {
-        // Retira o dinheiro aplicado em um investimento de renda fixa, rendendo uma quantidade propoRcional ao tempo que o
+        // Retira o dinheiro aplicado em um investimento de renda fixa, rendendo uma quantidade proporcional ao tempo que o
         //dinheiro ficou aplicado. Caso a retirada Seja feita antes da data de vencimento do ativo, uma penalidade é aplicada
 
         if(getDono().getStatus()){
@@ -50,7 +50,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
         return 0;
         /*
-        // Código antigo, polimosfismo pensado anteriormente nesse método náo é viavel
+        // Código antigo, polimosfismo pensado anteriormente nesse método não é viavel
     	if (getDono().getStatus()) {
             // Metodo mais geral que podera ser adicionado outros tipos de investimentos
             if (investimento instanceof RendaFixa) { // Tem regras de resgate diferentes para cada tipo de investimento
@@ -76,19 +76,43 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         }*/
     }
 
-    public void rendeConta (int diasPassados) {
-        // deve render os montantes de todos os investimentos da conta
-        for(Investimento i : investimentos) {
-            if (i instanceof RendaFixa){ // RendaFixa rende de uma forma especifica
-                AtivosRF ativo = ((RendaFixa) i).getAtivo();
+    public boolean comprarAcao(Acoes acao, int quantidade) {
+        float montante = acao.precoTempoReal()*quantidade;
+        if (getDono().getStatus() && getSaldo() >= montante) {
+            Acao novo_investimento = new Acao(acao, quantidade, acao.precoTempoReal(), new GregorianCalendar());
+            investimentos.add(novo_investimento);
+            setSaldo(getSaldo() - montante);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-                // Montante apos n dias = montante * (1 + rentabilidade)^n
-                float novoMontante = (float) (i.getMontante() * Math.pow(1 + ativo.getRentabilidade(), diasPassados));
-                novoMontante = (float) Math.round(novoMontante*100)/100; // Arredonda pra duas casas decimais
-                i.setMontante(novoMontante);
+    public float venderAcao(Acoes acao, int quantidade) {
+        //vende uma acao de acordo com o valor dela na data da venda. A diferença entre o valor atual (precoVenda) e o valor na compra (precoCompra) irá determinar lucro ou prejuízo
+
+        if(getDono().getStatus()) { //se cliente ativo
+            for (Investimento i : investimentos) {
+                if(i instanceof Acao) {
+                    if(((Acao) i).getAcao() == acao && quantidade >= ((Acao) i).getQuantidade()) {
+                        getInvestimentos().remove(i);
+                        float lucro = quantidade*(acao.precoTempoReal() - ((Acao) i).getPrecoCompra());
+                        setSaldo(getSaldo() + lucro); //diferença de preços da acao em dias diferentes
+
+                        return i.getMontante();
+                    }
+                }
             }
         }
-        // atualiza o dinheiroTotal do Cliente, que sera o saldo da conta + o dinheiro investido
+        return -1f;
+    }
+
+    public void rendeConta (int diasPassados) {
+        //rende todos os investimentos da conta (atualiza o montante), independente do tipo
+        for (Investimento i : investimentos) {
+            i.rendeInvestimento(diasPassados);
+        }
+        //atualiza dinheito total na conta
         getDono().setDinheiroTotal(getSaldo() + getMontanteTotal());
     }
 
@@ -102,17 +126,22 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         return out;
     }
 
-    // SEPARAR A LISTA DE INVESTIMENTOS ENTRE AÇÕES E RF
-    // MOSTRAR A LISTA ORDENADA COM Collections.sort QUE USA INTERFACE Comparable E MÉTODO .compareTo()
     public String verInvestimentos() { // Chama os toString de cada investimento, mais geral
         DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
         if (getDono().getStatus()) {
+            Collections.sort(investimentos); // ordena a lista do maior para o menor montante
             String out = "Investimentos:\n";
-            for (Investimento i : investimentos){
+            out += "* Renda Fixa:\n"; // Primeiro printa os investimentos de RF
+            for (Investimento i : investimentos){        
                 if (i instanceof RendaFixa) {
                     out += "- " + ((RendaFixa) i).getAtivo().getNome() + ": R$" + d1.format(i.getMontante()) + "\n";
                 }
-                // Para outro tipo de investimento adicionar else if (investimento instanceof tipoInvestimento)
+            }
+            out += "* Ações:\n"; // Depois printa os investimentos de Acao
+            for (Investimento i : investimentos){               	
+                if (i instanceof Acao) {
+                	out += "- " + ((Acao) i).getAcao().getEmpresa() + ": R$" + d1.format(i.getMontante()) + "\n";
+                }
             }
             return out;
         }
@@ -124,19 +153,25 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     public float getMontanteTotal () {
         float total = 0;
         for (Investimento i : investimentos) {
-            RendaFixa aux = (RendaFixa) i;
-            total += aux.getMontante();
+            total += i.getMontante();
         }
         return (float) Math.round(total*100)/100; // Arredonda para 2 casas decimais
     }
 
     public String getNomesAtivos() {
         String out = "";
-        for (Investimento i : investimentos){
+        Collections.sort(investimentos);
+        out += "* Renda Fixa:\n";
+        for (Investimento i : investimentos){        
             if (i instanceof RendaFixa) {
-                out += ((RendaFixa) i).getAtivo().getNome() + "   ";
+            	out += ((RendaFixa) i).getAtivo().getNome() + "   ";
             }
-            // Para outro tipo de investimento adicionar else if (investimento instanceof tipoInvestimento)
+        }
+        out += "\n* Ações:\n";
+        for (Investimento i : investimentos){               	
+            if (i instanceof Acao) {
+            	out += ((Acao) i).getAcao().getEmpresa() + "   ";
+            }
         }
         return out;
     }
@@ -144,5 +179,4 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     //GETTERS E SETTERS
     public ArrayList<Investimento> getInvestimentos () { return investimentos; }
     // Nao faz sentido ter um set para um ArrayList
-
 }

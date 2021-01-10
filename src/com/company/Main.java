@@ -1,6 +1,6 @@
-//package com.company;
+package com.company;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
@@ -9,13 +9,30 @@ public class Main {
     public static GregorianCalendar dataAtual = new GregorianCalendar(2020, 11, 7);
 
     public static void main(String[] args) {
+        if(resgataClientes()){
+            System.out.println("Dados resgatados com Sucesso!");
+        } else {
+            System.out.println("Erro! Dados não foram resgatados.");
+        }
 
-        // acoes
-        for(Acoes acao : Acoes.values()){
-            System.out.println("Ação da " + acao.getEmpresa() + " (" + acao.getTicker() + ") em tempo Real: R$" + acao.precoTempoReal());
+        for(Cliente c : Admin.getClientes()){
+            System.out.println(c.getConta());
         }
 
 
+        if(salvaClientes()){
+            System.out.println("Dados salvos com Sucesso!");
+        } else {
+            System.out.println("Erro! Dados não foram salvos.");
+        }
+
+        /*
+        for(Acoes acao : Acoes.values()){
+            System.out.println("Ação da " + acao.getEmpresa() + " (" + acao.getTicker() + ") em tempo Real: R$" + acao.precoTempoReal());
+        }
+         */
+
+        /*
         float valor;
         boolean v;
 
@@ -31,7 +48,6 @@ public class Main {
         c2.abrirConta(2); // Conta Poupanca
         c3.abrirConta(3); // Conta Investidor
         c4.abrirConta(1); // Conta Corrente
-
 
         // clinte c5 definido com entradas do usuario
         Scanner entrada = new Scanner(System.in);
@@ -214,20 +230,21 @@ public class Main {
         System.out.println(conta3);
         System.out.println(conta4); //Mostrara como rendeu os investimentos durante o tempo q passou entre uma data e outra
 
-
+        */
 
     }
+
+
 
     public static void rendeTudo(GregorianCalendar ultimaVezQueRendeu){
         // Atualiza todos os valores de todas as contas de todos os clientes
         // Deve ser chamado uma vez ao dia. Para fins de teste do sistema foi criado o metodo Main.setDataAtual
-        int diasPassados = (int) Data.diasEntre(ultimaVezQueRendeu, dataAtual); //por que long?
+        int diasPassados = (int) Data.diasEntre(ultimaVezQueRendeu, dataAtual); //POR QUE LONG?
 
         for(Cliente cliente : Admin.getClientes()){
             // Percorre todos os clientes, que estao guardados no ArrayList do Admin
             if(cliente.getStatus()){ // Se cliente esta ativo, rende sua conta
-                ContaBancaria conta = cliente.getConta();
-                conta.rendeConta(diasPassados);
+                cliente.getConta().rendeConta(diasPassados);
             }
         }
     }
@@ -238,4 +255,50 @@ public class Main {
         dataAtual = novaData;
         rendeTudo(dataAntiga); // Compara com a data atual
     }
+
+    public static boolean salvaClientes(){
+        // Guarda os dados de todos os clientes do sistema e consequentemente das contas e investimentos
+        String filename = "clientes.dat";
+        try{
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
+            for(Cliente c : Admin.getClientes()){
+                output.writeObject(c);
+                output.flush();
+            }
+            output.close();
+            return true;
+        } catch(IOException erro){
+            System.out.println("Erro escrevendo os clientes");
+        }
+        return false;
+    }
+
+    public static boolean resgataClientes(){
+        // Resgata os objetos Clientes guardados no Arquivo e associa à Admin.clientes
+        String filename = "clientes.dat";
+        int maxIdCliente = 0, maxIdConta = 0;
+        try{
+            ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
+            while(true){
+                Cliente c = (Cliente) input.readObject();
+                Admin.adicionaCliente(c);
+                if(c.getId() > maxIdCliente) maxIdCliente = c.getId();
+                if(c.getConta().getId() > maxIdConta) maxIdConta = c.getConta().getId();
+            }
+        } catch(EOFException endOfFileException){
+            // Arquivo terminou de ser lido
+            // Atualiza atributos de classe
+            Cliente.setNumClientes(maxIdCliente);
+            ContaBancaria.setNumContas(maxIdConta);
+            return true;
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro 1 lendo arquivo clientes.dat");
+        } catch (IOException e) {
+            System.out.println("Erro 2 lendo arquivo clientes.dat");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Erro 3 lendo arquivo clientes.dat");
+        }
+        return false;
+    }
+
 }

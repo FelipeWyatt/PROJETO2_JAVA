@@ -1,4 +1,4 @@
-//package com.company;
+package com.company;
 
 import java.io.IOException;
 import java.nio.channels.AcceptPendingException;
@@ -19,19 +19,23 @@ public enum Acoes {
         this.url = url;
     }
 
-    public String precoTempoReal() {
+
+    public float precoTempoReal() {
         // Aciona o WebScraping para pegar o preço da Ação em tempo real
         // Trata exceção do WebScraping
-        String preco = "-";
         try {
-            preco = DadosWeb.obtemPrecoAcao(this.url);
+            String precoString = DadosWeb.obtemPrecoAcao(this.url);
+            float preco = Float.parseFloat(precoString.replace(",", "."));
+            return preco;
         } catch (IOException erroConexao) {
             System.out.println("Erro de conexão: " + erroConexao);
             //erro.printStackTrace();
+        } catch (NumberFormatException erroParseFloat){
+            System.out.println("Erro formato do float: " + erroParseFloat);
         } catch (Exception erroGeral){
             System.out.println("Erro: " + erroGeral);
         }
-        return preco;
+        return -1f;
     }
 
     public String getEmpresa() { return empresa; }

@@ -1,9 +1,11 @@
-//package com.company;
+package com.company;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Admin {
+public class Admin implements Serializable {
 	// ATRIBUTOS
+	private static final long serialVersionUID = 303L;
 	private static ArrayList<Cliente> clientes = new ArrayList<Cliente>(); // Array para alocar todos os clientes criados
 	private static final int id = 0; // O ID do Admin eh por padrao definido como 0
 	private static String senha = "abcd";

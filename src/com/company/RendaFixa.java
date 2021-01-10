@@ -1,4 +1,4 @@
-//package com.company;
+package com.company;
 
 import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
@@ -7,7 +7,6 @@ class RendaFixa extends Investimento { // Um tipo de investimento, entao e uma c
 	// ATRIBUTOS
 	private AtivosRF ativo; //Ativo que sera comprado
 
-
 	// CONSTRUTOR
 	public RendaFixa(float montante, GregorianCalendar dataCompra, AtivosRF ativo) {
 		super(montante, dataCompra);
@@ -15,6 +14,13 @@ class RendaFixa extends Investimento { // Um tipo de investimento, entao e uma c
 	}
 
 	// METODOS
+	public void rendeInvestimento (int diasPassados) {
+		// Montante apos n dias = montante * (1 + rentabilidade)^n
+		float novoMontante = (float) (getMontante() * Math.pow(1 + ativo.getRentabilidade(), diasPassados));
+		novoMontante = (float) Math.round(novoMontante*100)/100; // Arredonda pra duas casas decimais
+		setMontante(novoMontante);
+	}
+
 	public String toString() {
 		DecimalFormat d1 = new DecimalFormat("#. 00");
 		String out = "Montante: R$" + d1.format(getMontante()) + "\n";

@@ -1,10 +1,14 @@
-//package com.company;
+package com.company;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 
-public class Investimento { // Classe mae para qualquer tipo de investimento, no futuro serao adicionados outros tipos alem de RendaFixa
+// Classe mae para qualquer tipo de investimento, no futuro serao adicionados outros tipos alem de RendaFixa
+public abstract class Investimento implements Serializable, Comparable<Investimento> {
+
 	// ATRIBUTOS
+	private static final long serialVersionUID = 302L;
 	private float montante; // quanto foi investido
 	private GregorianCalendar dataCompra;
 	
@@ -14,7 +18,10 @@ public class Investimento { // Classe mae para qualquer tipo de investimento, no
 		this.dataCompra = dataCompra;
 	}
 
+
 	// METODOS
+	public abstract void rendeInvestimento (int diasPassados);
+
 	public String toString() {
 		DecimalFormat d1 = new DecimalFormat("#. 00"); //Formata para "00,00"
 		String out = "Montante: R$" + d1.format(getMontante())+"\n";
@@ -36,5 +43,19 @@ public class Investimento { // Classe mae para qualquer tipo de investimento, no
 	public void setDataCompra(GregorianCalendar dataCompra) {
 		this.dataCompra = dataCompra;
 	}
+	
+	//DA INTERFACE COMPARABLE
+	public int compareTo(Investimento outro) {
+		//SE TEM MAIS MONTANTE
+		if (this.montante > outro.montante) {
+			return -1;
+		}
+		//SE TEM MENOS MONTANTE
+		else if (this.montante < outro.montante) {
+			return 1;
+		}
+		//SE TEM O MESMO MONTANTE
+		return 0;
+	}	
 
 }

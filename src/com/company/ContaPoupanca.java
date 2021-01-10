@@ -1,4 +1,4 @@
-//package com.company;
+package com.company;
 
 public class ContaPoupanca extends ContaBancaria { // Rende diariamente a uma taxa fixa
     private static final float rendimentoDiario = 0.00007f; // 0.007%
@@ -14,7 +14,7 @@ public class ContaPoupanca extends ContaBancaria { // Rende diariamente a uma ta
         novoSaldo = (float) Math.round(novoSaldo*100)/100; // Arredonda pra duas casas decimais
         setSaldo(novoSaldo);
         // atualiza o dinheiroTotal do Cliente
-       getDono().setDinheiroTotal(novoSaldo);
+        getDono().setDinheiroTotal(novoSaldo);
     }
 
     @Override
