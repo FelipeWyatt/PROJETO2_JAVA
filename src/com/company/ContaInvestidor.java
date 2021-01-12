@@ -17,7 +17,8 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     // METODOS
     public boolean comprarRF(AtivosRF ativo, float montante) {
     	if (getDono().getStatus() && getSaldo() >= montante) {
-	        RendaFixa novo_investimento = new RendaFixa(montante, new GregorianCalendar(), ativo);
+		// Implementação de polimosfismo pois ArrayList de Investimento contém Acao e RF
+	        Investimento novo_investimento = new RendaFixa(montante, new GregorianCalendar(), ativo);
 	        investimentos.add(novo_investimento);
 	        setSaldo(getSaldo() - montante);
             return true;

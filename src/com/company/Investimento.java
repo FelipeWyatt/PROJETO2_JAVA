@@ -6,7 +6,6 @@ import java.util.GregorianCalendar;
 
 // Classe mae para qualquer tipo de investimento, no futuro serao adicionados outros tipos alem de RendaFixa
 public abstract class Investimento implements Serializable, Comparable<Investimento> {
-
 	// ATRIBUTOS
 	private static final long serialVersionUID = 302L;
 	private float montante; // quanto foi investido
