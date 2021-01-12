@@ -38,7 +38,6 @@ public enum Acoes {
         return -1f;
     }
 
-
     public String getEmpresa() { return empresa; }
 
     public String getTicker() { return ticker; }

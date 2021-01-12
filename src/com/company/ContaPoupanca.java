@@ -8,6 +8,15 @@ public class ContaPoupanca extends ContaBancaria { // Rende diariamente a uma ta
         super(saldo, dono);
     }
 
+    public void rendeConta (int diasPassados) {
+        // Saldo apos n dias = saldo*(1 + rendimentoDiario)^n
+        float novoSaldo = (float) (getSaldo() * Math.pow((1 + rendimentoDiario), diasPassados));
+        novoSaldo = (float) Math.round(novoSaldo*100)/100; // Arredonda pra duas casas decimais
+        setSaldo(novoSaldo);
+        // atualiza o dinheiroTotal do Cliente
+        getDono().setDinheiroTotal(novoSaldo);
+    }
+
     @Override
     public String toString () {
         String out = "CONTA POUPANCA \n";

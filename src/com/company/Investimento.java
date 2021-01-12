@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 
-public class Investimento implements Serializable, Comparable<Investimento> { // Classe mae para qualquer tipo de investimento, no futuro serao adicionados outros tipos alem de RendaFixa
+// Classe mae para qualquer tipo de investimento, no futuro serao adicionados outros tipos alem de RendaFixa
+public abstract class Investimento implements Serializable, Comparable<Investimento> {
 	// ATRIBUTOS
 	private static final long serialVersionUID = 302L;
 	private float montante; // quanto foi investido
@@ -16,7 +17,10 @@ public class Investimento implements Serializable, Comparable<Investimento> { //
 		this.dataCompra = dataCompra;
 	}
 
+
 	// METODOS
+	public abstract void rendeInvestimento (int diasPassados);
+
 	public String toString() {
 		DecimalFormat d1 = new DecimalFormat("#. 00"); //Formata para "00,00"
 		String out = "Montante: R$" + d1.format(getMontante())+"\n";

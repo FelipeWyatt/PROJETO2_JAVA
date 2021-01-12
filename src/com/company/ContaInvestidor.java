@@ -11,7 +11,6 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     //METODO CONSTRUTOR
     public ContaInvestidor (float saldo, Cliente dono) {
         super(saldo, dono);
-
         investimentos = new ArrayList<Investimento>();
     }
 
@@ -27,7 +26,6 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     		return false;
     	}
     }
-
 
     public float venderRF(RendaFixa investimento) {
         // Retira o dinheiro aplicado em um investimento de renda fixa, rendendo uma quantidade proporcional ao tempo que o
@@ -77,6 +75,50 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
             // Para outro tipo de investimento adicionar else if (investimento instanceof tipoInvestimento)
         }*/
+    }
+
+    public boolean comprarAcao(Acoes acao, int quantidade) {
+        float montante = acao.precoTempoReal()*quantidade;
+        if (getDono().getStatus() && getSaldo() >= montante) {
+            Investimento novo_investimento = new Acao(acao, quantidade, acao.precoTempoReal(), new GregorianCalendar());
+            investimentos.add(novo_investimento);
+            setSaldo(getSaldo() - montante);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public float venderAcao(Acoes acao, int quantidade) {
+        //vende uma acao de acordo com o valor dela na data da venda. A diferença entre o valor atual (precoVenda) e o valor na compra (precoCompra) irá determinar lucro ou prejuízo
+
+        if(getDono().getStatus()) { //se cliente ativo
+            for (Investimento i : investimentos) {
+                if(i instanceof Acao) {
+                    if(((Acao) i).getAcao() == acao && ((Acao) i).getQuantidade() >= quantidade && quantidade > 0) {
+                        if(quantidade == ((Acao) i).getQuantidade()) investimentos.remove(i);
+			((Acao) i).setQuantidade(((Acao) i).getQuantidade() - quantidade);
+			i.rendeInvestimento(0); //apenas atualiza montante do investimento com a nova quantidade
+                        float valor = quantidade*acao.precoTempoReal();
+                        setSaldo(getSaldo() + valor); //diferença de preços da acao em dias diferentes
+
+                        return i.getMontante();
+                    }
+                }
+            }
+        }
+        return -1f;
+    }
+
+    public void rendeConta (int diasPassados) {
+        //rende todos os investimentos da conta (atualiza o montante), independente do tipo
+        for (Investimento i : investimentos) {
+	    // Polimorfismo na utilização do método rendeInvestimento.
+	    // Note que não importa o tipo de investimento (Renda Fixa ou Ações) devido ao método abstrato.
+            i.rendeInvestimento(diasPassados);
+        }
+        //atualiza dinheito total na conta
+        getDono().setDinheiroTotal(getSaldo() + getMontanteTotal());
     }
 
     @Override
@@ -142,5 +184,4 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     //GETTERS E SETTERS
     public ArrayList<Investimento> getInvestimentos () { return investimentos; }
     // Nao faz sentido ter um set para um ArrayList
-
 }

@@ -3,7 +3,7 @@ package com.company;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
-public class ContaBancaria implements Serializable {
+public abstract class ContaBancaria implements Serializable {
     // ATRIBUTOS
     private static final long serialVersionUID = 301L;
     private static int numContas = 0;
@@ -19,7 +19,6 @@ public class ContaBancaria implements Serializable {
 
         numContas++;
     }
-
 
     // METODOS
     public boolean retirar (float valor) { //faz saques da conta e retorna se foi possivel ou nao com base no saldo disponivel
@@ -51,6 +50,8 @@ public class ContaBancaria implements Serializable {
     		return false;
     	}
     }
+
+    public abstract void rendeConta (int diasPassados);
 
     @Override
     public String toString () {

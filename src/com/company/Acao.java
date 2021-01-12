@@ -18,10 +18,14 @@ public class Acao extends Investimento {
         this.precoCompra = precoCompra;
     }
 
+    public void rendeInvestimento (int diasPassados) {
+        // Atualiza o montante
+        // Para acoes, os dias passados são irrelevantes
+        if(acao.precoTempoReal() > 0) setMontante(quantidade * acao.precoTempoReal());
+    }
 
     public String toString() {
-        // Atualiza o montante
-        if(acao.precoTempoReal() > 0) setMontante(quantidade * acao.precoTempoReal());
+       rendeInvestimento(0);
 
         DecimalFormat d1 = new DecimalFormat("#. 00");
         String out = "Montante: R$" + d1.format(getMontante()) + "\n";
