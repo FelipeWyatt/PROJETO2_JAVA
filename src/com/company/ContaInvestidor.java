@@ -79,7 +79,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     public boolean comprarAcao(Acoes acao, int quantidade) {
         float montante = acao.precoTempoReal()*quantidade;
         if (getDono().getStatus() && getSaldo() >= montante) {
-            Acao novo_investimento = new Acao(acao, quantidade, acao.precoTempoReal(), new GregorianCalendar());
+            Investimento novo_investimento = new Acao(acao, quantidade, acao.precoTempoReal(), new GregorianCalendar());
             investimentos.add(novo_investimento);
             setSaldo(getSaldo() - montante);
             return true;
@@ -94,10 +94,12 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         if(getDono().getStatus()) { //se cliente ativo
             for (Investimento i : investimentos) {
                 if(i instanceof Acao) {
-                    if(((Acao) i).getAcao() == acao && quantidade >= ((Acao) i).getQuantidade()) {
-                        getInvestimentos().remove(i);
-                        float lucro = quantidade*(acao.precoTempoReal() - ((Acao) i).getPrecoCompra());
-                        setSaldo(getSaldo() + lucro); //diferença de preços da acao em dias diferentes
+                    if(((Acao) i).getAcao() == acao && ((Acao) i).getQuantidade() >= quantidade && quantidade > 0) {
+                        if(quantidade == ((Acao) i).getQuantidade()) investimentos.remove(i);
+			((Acao) i).setQuantidade(((Acao) i).getQuantidade() - quantidade);
+			i.rendeInvestimento(0); //apenas atualiza montante do investimento com a nova quantidade
+                        float valor = quantidade*acao.precoTempoReal();
+                        setSaldo(getSaldo() + valor); //diferença de preços da acao em dias diferentes
 
                         return i.getMontante();
                     }
@@ -110,6 +112,8 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     public void rendeConta (int diasPassados) {
         //rende todos os investimentos da conta (atualiza o montante), independente do tipo
         for (Investimento i : investimentos) {
+	    // Polimorfismo na utilização do método rendeInvestimento.
+	    // Note que não importa o tipo de investimento (Renda Fixa ou Ações) devido ao método abstrato.
             i.rendeInvestimento(diasPassados);
         }
         //atualiza dinheito total na conta
