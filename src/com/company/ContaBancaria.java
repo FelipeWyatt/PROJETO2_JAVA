@@ -19,6 +19,9 @@ public abstract class ContaBancaria implements Serializable {
 
         numContas++;
     }
+    
+	// Método abstrato, deve ter uma implementação nas classes filhas
+    public abstract void rendeConta (int diasPassados);
 
     // METODOS
     public boolean retirar (float valor) { //faz saques da conta e retorna se foi possivel ou nao com base no saldo disponivel
@@ -29,14 +32,9 @@ public abstract class ContaBancaria implements Serializable {
 	            getDono().setDinheiroTotal(getDono().getDinheiroTotal() - valor);
 
 	            return true;
-	        } else {
-	            return false;
-	        }
+	        } 
     	}
-    	else {
-    		return false;
-    	}
-    		
+    	return false;
     }
 
     public boolean depositar (float valor) { //adicina determinada quantia ao saldo da conta
@@ -46,12 +44,9 @@ public abstract class ContaBancaria implements Serializable {
 	        getDono().setDinheiroTotal(getDono().getDinheiroTotal() + valor);
 	        return true;
     	}
-    	else {
-    		return false;
-    	}
+    	return false;
     }
 
-    public abstract void rendeConta (int diasPassados);
 
     @Override
     public String toString () {
