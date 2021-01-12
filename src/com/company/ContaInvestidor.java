@@ -17,7 +17,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     // METODOS
     public boolean comprarRF(AtivosRF ativo, float montante) {
     	if (getDono().getStatus() && getSaldo() >= montante) {
-		// Implementação de polimosfismo pois ArrayList de Investimento contém Acao e RF
+		    // Implementação de polimosfismo pois ArrayList de Investimento contém Acao e RF
 	        Investimento novo_investimento = new RendaFixa(montante, new GregorianCalendar(), ativo);
 	        investimentos.add(novo_investimento);
 	        setSaldo(getSaldo() - montante);
@@ -55,27 +55,46 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
     public boolean comprarAcao(Acoes acao, int quantidade) {
         float montante = acao.precoTempoReal()*quantidade;
-        if (getDono().getStatus() && getSaldo() >= montante) {
+
+        if(getDono().getStatus()  && getSaldo() >= montante ){
+            // Verifica se investimentos já contém essa ação
+            for(Investimento i: investimentos){
+                if(i instanceof Acao){
+                    if(((Acao) i).getAcao() == acao){
+                        ((Acao) i).setQuantidade(((Acao) i).getQuantidade() + quantidade);
+                        i.rendeInvestimento(0); // Atualiza o montante do investimento
+                        setSaldo(getSaldo() - montante); // retira o valor das ações do saldo da conta
+
+                        return true;
+                    }
+                }
+            }
+
+            // Caso o cliente não possua essa ação:
             Investimento novo_investimento = new Acao(acao, quantidade, acao.precoTempoReal(), new GregorianCalendar());
             investimentos.add(novo_investimento);
             setSaldo(getSaldo() - montante);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public float venderAcao(Acoes acao, int quantidade) {
         // Vende uma acao de acordo com o valor dela na data da venda. A diferença entre o valor atual (precoVenda) e o valor 
-	//na compra (precoCompra) irá determinar lucro ou prejuízo.
+	    //na compra (precoCompra) irá determinar lucro ou prejuízo.
 
         if(getDono().getStatus()) { //se cliente ativo
             for (Investimento i : investimentos) {
                 if(i instanceof Acao) {
-                    if(((Acao) i).getAcao() == acao && ((Acao) i).getQuantidade() >= quantidade && quantidade > 0) {
-                        if(quantidade == ((Acao) i).getQuantidade()) investimentos.remove(i);
-			((Acao) i).setQuantidade(((Acao) i).getQuantidade() - quantidade);
-			i.rendeInvestimento(0); //apenas atualiza montante do investimento com a nova quantidade
+                    if(((Acao) i).getAcao() == acao && quantidade <= ((Acao) i).getQuantidade() && quantidade > 0) {
+                        if(quantidade == ((Acao) i).getQuantidade()){
+                            // DEseja-se se desfazer do investimento e vender todas as ações
+                            investimentos.remove(i);
+                        } else {
+                            // Deseja-se vender uma parte das ações
+                            ((Acao) i).setQuantidade(((Acao) i).getQuantidade() - quantidade);
+                            i.rendeInvestimento(0); // Apenas atualiza montante do investimento com a nova quantidade
+                        }
                         float valor = quantidade*acao.precoTempoReal();
                         setSaldo(getSaldo() + valor); //diferença de preços da acao em dias diferentes
 
@@ -94,7 +113,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 	    // Note que não importa o tipo de investimento (Renda Fixa ou Ações) devido ao método abstrato.
             i.rendeInvestimento(diasPassados);
         }
-        //atualiza dinheito total na conta
+        //atualiza dinheito total em Cliente
         getDono().setDinheiroTotal(getSaldo() + getMontanteTotal());
     }
 

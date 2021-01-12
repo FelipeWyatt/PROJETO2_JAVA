@@ -19,7 +19,6 @@ public class Main {
             System.out.println(c.getConta());
         }
 
-
         if(salvaClientes()){
             System.out.println("Dados salvos com Sucesso!");
         } else {

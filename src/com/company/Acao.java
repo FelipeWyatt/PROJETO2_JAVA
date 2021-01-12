@@ -22,6 +22,7 @@ public class Acao extends Investimento {
         // Atualiza o montante
         // Para acoes, os dias passados são irrelevantes
         if(acao.precoTempoReal() > 0) setMontante(quantidade * acao.precoTempoReal());
+
     }
 
     public String toString() {
