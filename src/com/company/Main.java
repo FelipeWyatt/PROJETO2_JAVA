@@ -244,6 +244,8 @@ public class Main {
         for(Cliente cliente : Admin.getClientes()){
             // Percorre todos os clientes, que estao guardados no ArrayList do Admin
             if(cliente.getStatus()){ // Se cliente esta ativo, rende sua conta
+                // Polimorfismo presente na utilização do método rendeConta, que funciona independente do
+                // tipo de conta, já que a classe ContaBancaria se tornou abstrata.
                 cliente.getConta().rendeConta(diasPassados);
             }
         }
