@@ -2,11 +2,12 @@ package com.company;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Admin implements Serializable {
 	// ATRIBUTOS
 	private static final long serialVersionUID = 303L;
-	private static ArrayList<Cliente> clientes = new ArrayList<Cliente>(); // Array para alocar todos os clientes criados
+	private static List<Cliente> clientes = new ArrayList<>(); // Array para alocar todos os clientes criados
 	private static final int id = 0; // O ID do Admin eh por padrao definido como 0
 	private static String senha = "abcd";
 
@@ -50,7 +51,14 @@ public class Admin implements Serializable {
 		}
 		return "Cliente invalido";
 	}
-	
+	public static Cliente verObjetoCliente(int id) {
+		for (Cliente cliente : clientes) {
+			if (cliente.getId() == id) {
+				return cliente;
+			}
+		}
+		return null;
+	}
 	// E pode alterar o saldo de qualquer cliente tambem
 	public static void alterarSaldo(int id, float saldo) {
 		for (Cliente cliente : clientes) {
@@ -67,7 +75,7 @@ public class Admin implements Serializable {
 
 
 	// GET E SETTERS
-	public static ArrayList<Cliente> getClientes() {
+	public static List<Cliente> getClientes() {
 		return clientes;
 	}
 	// Nao faz sentido ter setClientes
