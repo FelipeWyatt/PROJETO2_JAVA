@@ -49,32 +49,8 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
             }
         }
 
-        return 0;
-        /*
-        // Código antigo, polimosfismo pensado anteriormente nesse método não é viavel
-    	if (getDono().getStatus()) {
-            // Metodo mais geral que podera ser adicionado outros tipos de investimentos
-            if (investimento instanceof RendaFixa) { // Tem regras de resgate diferentes para cada tipo de investimento
-                investimentos.remove(investimento);
-                //investimento = (RendaFixa) investimento;
-                GregorianCalendar dataCompra = investimento.getDataCompra();
-                GregorianCalendar dataVencimento = ((RendaFixa) investimento).getAtivo().getVencimento();
-
-                if (Data.diasEntre(dataCompra, dataVencimento) <= 0) { // verificar ordem das datas
-                    // Entao esta sendo resgatado depois do prazo, sem penalidade
-                    setSaldo(getSaldo() + investimento.getMontante());
-
-                } else {
-                    // Entao esta sendo resgatado antes do prazo, com penalidade
-                    float montante = investimento.getMontante();
-                    float valorPenalidade = montante * ((RendaFixa) investimento).getAtivo().getPenalidade();
-                    setSaldo(getSaldo() + montante - valorPenalidade);
-
-                }
-            }
-
-            // Para outro tipo de investimento adicionar else if (investimento instanceof tipoInvestimento)
-        }*/
+        return -1f;
+        
     }
 
     public boolean comprarAcao(Acoes acao, int quantidade) {
@@ -90,7 +66,8 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     }
 
     public float venderAcao(Acoes acao, int quantidade) {
-        //vende uma acao de acordo com o valor dela na data da venda. A diferença entre o valor atual (precoVenda) e o valor na compra (precoCompra) irá determinar lucro ou prejuízo
+        // Vende uma acao de acordo com o valor dela na data da venda. A diferença entre o valor atual (precoVenda) e o valor 
+	//na compra (precoCompra) irá determinar lucro ou prejuízo.
 
         if(getDono().getStatus()) { //se cliente ativo
             for (Investimento i : investimentos) {
