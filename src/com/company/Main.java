@@ -1,4 +1,6 @@
 package com.company;
+import com.company.views.TelaLogin;
+
 import java.io.*;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -18,6 +20,11 @@ public class Main {
             System.out.println(c.getConta());
         }
 
+        // TelaLogin
+        TelaLogin dialog = new TelaLogin();
+        dialog.pack();
+        dialog.setVisible(true);
+        System.exit(0);
 
         if(salvaClientes()){
             System.out.println("Dados salvos com Sucesso!");
