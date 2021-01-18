@@ -15,6 +15,7 @@ public class Main {
             System.out.println("Erro! Dados não foram resgatados.");
         }
 
+        /*
         for(Cliente c : Admin.getClientes()){
             System.out.println(c.getConta());
         }
@@ -23,7 +24,11 @@ public class Main {
             System.out.println(a + " ");
         }
 
+         */
+
+        // Cria a tela 3
         TelaInvestimentos tela3 = new TelaInvestimentos();
+        //tela3.setSize(300, 300);
         tela3.pack();
         tela3.setVisible(true);
 
