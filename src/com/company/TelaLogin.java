@@ -81,6 +81,7 @@ public class TelaLogin extends JDialog {
         dispose();
     }
 
+    //Colocar na Main
     public static void main(String[] args) {
         TelaLogin dialog = new TelaLogin();
         dialog.pack();
