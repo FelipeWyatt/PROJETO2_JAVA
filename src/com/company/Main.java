@@ -19,6 +19,10 @@ public class Main {
             System.out.println(c.getConta());
         }
 
+        for(Acoes a:Acoes.values()){
+            System.out.println(a + " ");
+        }
+
         if(salvaClientes()){
             System.out.println("Dados salvos com Sucesso!");
         } else {
