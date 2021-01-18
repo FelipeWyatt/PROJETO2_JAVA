@@ -23,6 +23,10 @@ public class Main {
             System.out.println(a + " ");
         }
 
+        TelaInvestimentos tela3 = new TelaInvestimentos();
+        tela3.pack();
+        tela3.setVisible(true);
+
 
         if(salvaClientes()){
             System.out.println("Dados salvos com Sucesso!");
