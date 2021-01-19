@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TelaInvestimentos extends JFrame {
     private JList<String> listAcoes, listRF, listAcoesCompra, listRFCompra;
@@ -45,7 +46,7 @@ public class TelaInvestimentos extends JFrame {
     private void criaListAcoes(){
         // Model pois assim a lista pode ser atualizada automaticamente quando o model for alterado
         modeloAcoesString = new DefaultListModel<String>();
-        modeloAcoesString.addAll(contaCliente.getAcoesString());
+        modeloAcoesString.addAll(getAcoesString(clienteInvestidor));
 
         listAcoes = new JList<String>(modeloAcoesString);
         listAcoes.setBackground(getBackground());
@@ -67,7 +68,7 @@ public class TelaInvestimentos extends JFrame {
     private void criaListRF(){
         // Model pois assim a lista pode ser atualizada automaticamente quando o model for alterado
         modeloRFString = new DefaultListModel<String>();
-        modeloRFString.addAll(contaCliente.getRFString());
+        modeloRFString.addAll(getRFString(clienteInvestidor));
 
         listRF = new JList<String>(modeloRFString);
         listRF.setBackground(getBackground());
@@ -113,7 +114,7 @@ public class TelaInvestimentos extends JFrame {
                     } else {
                         // Atualiza o modelo da lista de ações do usuário que atualiza no Jlist automaticamente
                         modeloAcoesString.clear();
-                        modeloAcoesString.addAll(contaCliente.getAcoesString());
+                        modeloAcoesString.addAll(getAcoesString(clienteInvestidor));
                         acoesCliente = contaCliente.getAcoes(); // Atualiza a lista
                         JOptionPane.showMessageDialog(null,
                                 "Ação vendida com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
@@ -130,7 +131,7 @@ public class TelaInvestimentos extends JFrame {
                     } else {
                         // Atualiza o modelo da lista de ações do usuário que atualiza no Jlist automaticamente
                         modeloRFString.clear();
-                        modeloRFString.addAll(contaCliente.getRFString());
+                        modeloRFString.addAll(getRFString(clienteInvestidor));
                         RFCliente = contaCliente.getRF(); // Atualiza a lista
                         JOptionPane.showMessageDialog(null,
                                 "Investimento vendido com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
@@ -211,7 +212,7 @@ public class TelaInvestimentos extends JFrame {
                     } else {
                         // Atualiza o modelo da lista de ações do usuário que atualiza no Jlist automaticamente
                         modeloAcoesString.clear();
-                        modeloAcoesString.addAll(contaCliente.getAcoesString());
+                        modeloAcoesString.addAll(getAcoesString(clienteInvestidor));
                         acoesCliente = contaCliente.getAcoes(); // Atualiza a lista
                         JOptionPane.showMessageDialog(null,
                                 "Ação comprada com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
@@ -238,7 +239,7 @@ public class TelaInvestimentos extends JFrame {
                     } else {
                         // Atualiza o modelo da lista de ações do usuário que atualiza no Jlist automaticamente
                         modeloRFString.clear();
-                        modeloRFString.addAll(contaCliente.getRFString());
+                        modeloRFString.addAll(getRFString(clienteInvestidor));
                         RFCliente = contaCliente.getRF(); // Atualiza a lista
                         JOptionPane.showMessageDialog(null,
                                 "Investimento comprado com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
@@ -330,6 +331,34 @@ public class TelaInvestimentos extends JFrame {
 
         getContentPane().add(panelCompra);
 
+    }
+
+    public ArrayList<String> getAcoesString(Cliente cliente){
+        // Gera um ArrayList<String> para mostrar os ativos formatados no JList
+        DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
+
+        ArrayList<Acao> acoes = ((ContaInvestidor) cliente.getConta()).getAcoes();
+        ArrayList<String> saida = new ArrayList<String>();
+
+        for (Acao i : acoes){
+            saida.add(((Acao) i).getAcao().getTicker() + " (x" + ((Acao) i).getQuantidade() + ") : R$" + d1.format(i.getMontante()));
+        }
+
+        return saida;
+    }
+
+    public ArrayList<String> getRFString(Cliente cliente){
+        // Gera um ArrayList<String> para mostrar os ativos formatados no JList
+        DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
+
+        ArrayList<RendaFixa> RFs = ((ContaInvestidor) cliente.getConta()).getRF();
+        ArrayList<String> saida = new ArrayList<String>();
+
+        for (RendaFixa i : RFs){
+            saida.add(((RendaFixa) i).getAtivo().getNome() + ": R$" + d1.format(i.getMontante()));
+        }
+
+        return saida;
     }
 
 

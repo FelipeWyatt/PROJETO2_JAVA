@@ -151,6 +151,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         }
     }
 
+    // GETTERS
     public float getMontanteTotal () {
         float total = 0;
         for (Investimento i : investimentos) {
@@ -191,20 +192,6 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         return saida;
     }
 
-    public ArrayList<String> getAcoesString(){
-        // Usado em TelaInvestimentos
-        DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
-        Collections.sort(investimentos); // ordena a lista do maior para o menor montante
-        ArrayList<String> saida = new ArrayList<String>();
-
-        for (Investimento i : investimentos){
-            if (i instanceof Acao) {
-                saida.add(((Acao) i).getAcao().getTicker() + " (x" + ((Acao) i).getQuantidade() + ") : R$" + d1.format(i.getMontante()));
-            }
-        }
-
-        return saida;
-    }
     public ArrayList<RendaFixa> getRF(){
         // Usado em TelaInvestimentos
         Collections.sort(investimentos); // ordena a lista do maior para o menor montante
@@ -219,23 +206,6 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         return saida;
     }
 
-
-    public ArrayList<String> getRFString(){
-        // Usado em TelaInvestimentos
-        DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
-        Collections.sort(investimentos); // ordena a lista do maior para o menor montante
-        ArrayList<String> saida = new ArrayList<String>();
-
-        for (Investimento i : investimentos){
-            if (i instanceof RendaFixa) {
-                saida.add(((RendaFixa) i).getAtivo().getNome() + ": R$" + d1.format(i.getMontante()));
-            }
-        }
-
-        return saida;
-    }
-
-    //GETTERS E SETTERS
     public ArrayList<Investimento> getInvestimentos () { return investimentos; }
     // Nao faz sentido ter um set para um ArrayList
 }
