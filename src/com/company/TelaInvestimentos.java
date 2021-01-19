@@ -4,11 +4,17 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class TelaInvestimentos extends JFrame {
     private JList<String> listAcoes, listRF, listAcoesCompra, listRFCompra;
     private JLabel labelAtivoSelecionado, labelCompraSelecionado;
+
+    private ArrayList<Acao> acoesCliente;
+    private ArrayList<RendaFixa> RFCliente;
     private Cliente clienteInvestidor;
     private ContaInvestidor contaCliente;
 
@@ -36,9 +42,14 @@ public class TelaInvestimentos extends JFrame {
 
         // Lista de ações do cliente
         // Tratar caso em que cliente não tem ações
-        ArrayList<String> acoesClienteString = contaCliente.getAcoesString();
-        ArrayList<Acao> acoesCliente = contaCliente.getAcoes();
-        listAcoes = new JList<String>(acoesClienteString.toArray(new String[0]));
+        //ArrayList<String> acoesClienteString = contaCliente.getAcoesString();
+        acoesCliente = contaCliente.getAcoes();
+
+        // Model pois assim a lista pode ser atualizada automaticamente quando o model for alterado
+        DefaultListModel<String> modeloAcoesString = new DefaultListModel<String>();
+        modeloAcoesString.addAll(contaCliente.getAcoesString());
+
+        listAcoes = new JList<String>(modeloAcoesString);
         listAcoes.setBackground(getBackground());
         listAcoes.setAlignmentY(Component.TOP_ALIGNMENT);
         listAcoes.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -61,9 +72,14 @@ public class TelaInvestimentos extends JFrame {
 
         // Lista de RF do cliente
         // Tratar caso em que cliente não tem RF
-        ArrayList<String> RFClienteString = contaCliente.getRFString();
-        ArrayList<RendaFixa> RFCliente = contaCliente.getRF();
-        listRF = new JList<String>(RFClienteString.toArray(new String[0]));
+        //ArrayList<String> RFClienteString = contaCliente.getRFString();
+        RFCliente = contaCliente.getRF();
+
+        // Model pois assim a lista pode ser atualizada automaticamente quando o model for alterado
+        DefaultListModel<String> modeloRFString = new DefaultListModel<String>();
+        modeloRFString.addAll(contaCliente.getRFString());
+
+        listRF = new JList<String>(modeloRFString);
         listRF.setBackground(getBackground());
         listRF.setAlignmentY(Component.TOP_ALIGNMENT);
         listRF.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -88,13 +104,63 @@ public class TelaInvestimentos extends JFrame {
 
         panelVenda.add(new JLabel("Ativo selecionado: "));
         
-        labelAtivoSelecionado = new JLabel("-");
+        labelAtivoSelecionado = new JLabel("");
         panelVenda.add(labelAtivoSelecionado);
 
         panelVenda.add(Box.createHorizontalGlue()); // Componente para layout
         
         JButton btVender = new JButton("Vender");
         btVender.setBackground(Color.white);
+        btVender.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!listAcoes.isSelectionEmpty()){
+                    DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
+                    Acao acaoSelecionada = acoesCliente.get(listAcoes.getSelectedIndex());
+                    String qtdString = JOptionPane.showInputDialog(
+                            "Quantas unidades de " + acaoSelecionada.getAcao().getTicker() + " a R$" +
+                                    d1.format(acaoSelecionada.getAcao().precoTempoReal()) + " deseja vender ?");
+                    int qtd = -1;
+                    try{
+                        qtd = Integer.parseInt(qtdString);
+                    } catch (NumberFormatException erro){
+                        JOptionPane.showMessageDialog(null,
+                                "Quantidade inválida! Digite um inteiro para a quantidade.", null, JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    if(contaCliente.venderAcao(acaoSelecionada.getAcao(), qtd) < 0){
+                        // Não foi possível vender
+                        JOptionPane.showMessageDialog(null,
+                                "Não foi possível vender a ação.", null, JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        // Atualiza o modelo da lista de ações do usuário que atualiza no Jlist automaticamente
+                        modeloAcoesString.clear();
+                        modeloAcoesString.addAll(contaCliente.getAcoesString());
+                        acoesCliente = contaCliente.getAcoes(); // Atualiza a lista
+                        JOptionPane.showMessageDialog(null,
+                                "Ação vendida com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
+                                null, JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else if(!listRF.isSelectionEmpty()){
+                    DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
+                    RendaFixa RFSelecionado = RFCliente.get(listRF.getSelectedIndex());
+
+                    if(contaCliente.venderRF(RFSelecionado) < 0){
+                        // Não foi possível vender
+                        JOptionPane.showMessageDialog(null,
+                                "Não foi possível vender o investimento em Renda Fixa.", null, JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        // Atualiza o modelo da lista de ações do usuário que atualiza no Jlist automaticamente
+                        modeloRFString.clear();
+                        modeloRFString.addAll(contaCliente.getRFString());
+                        RFCliente = contaCliente.getRF(); // Atualiza a lista
+                        JOptionPane.showMessageDialog(null,
+                                "Investimento vendido com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
+                                null, JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        });
         panelVenda.add(btVender);
 
         getContentPane().add(panelVenda);
