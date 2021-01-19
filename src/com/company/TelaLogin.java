@@ -1,8 +1,12 @@
 package com.company;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class TelaLogin extends JDialog {
     private JPanel contentPane;
@@ -17,6 +21,16 @@ public class TelaLogin extends JDialog {
         setTitle("Login");
         getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         getRootPane().setDefaultButton(buttonOK = new JButton("OK"));
+
+        try{
+            BufferedImage logoBuff = ImageIO.read(new File("logoBankCamp.png"));
+
+            JLabel logoLabel = new JLabel(new ImageIcon(logoBuff));
+            getContentPane().add(logoLabel);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         JPanel panelId = new JPanel();
         panelId.setLayout(new BoxLayout(panelId, BoxLayout.X_AXIS));
@@ -54,7 +68,8 @@ public class TelaLogin extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer login = Integer.parseInt(campoLogin.getText());
-                String senha = campoSenha.getPassword().toString();
+                char[] senha = campoSenha.getPassword();
+                System.out.println(senha);
 
                 Cliente clienteValidado = null;
                 for(Cliente c : Admin.getClientes()){
@@ -68,6 +83,8 @@ public class TelaLogin extends JDialog {
                 // Tela de Erro
                 if (clienteValidado == null || !clienteValidado.getSenha().equals(senha)) {
                     System.out.println("Erro no Login");
+                    System.out.println(login);
+                    System.out.println(senha);
                     return;
                 }
                 if (clienteValidado.getConta() instanceof ContaInvestidor) {
