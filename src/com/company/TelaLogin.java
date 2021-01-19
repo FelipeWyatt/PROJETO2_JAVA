@@ -19,6 +19,7 @@ public class TelaLogin extends JDialog {
         setResizable(false);
         setModal(true);
         setTitle("Login");
+        setBackground(Color.white);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         getRootPane().setDefaultButton(buttonOK = new JButton("OK"));
 
@@ -35,25 +36,33 @@ public class TelaLogin extends JDialog {
         JPanel panelId = new JPanel();
         panelId.setLayout(new BoxLayout(panelId, BoxLayout.X_AXIS));
         panelId.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelId.setBackground(Color.white);
 
         panelId.add(new JLabel("ID: "));
 
-        panelId.add(Box.createHorizontalGlue());
+        panelId.add(Box.createRigidArea(new Dimension(30, 0)));
 
         campoLogin = new JTextField();
         campoLogin.setColumns(10);
+        campoLogin.setBackground(Color.lightGray);
         panelId.add(campoLogin);
+
+        panelId.add(Box.createRigidArea(new Dimension(150, 0)));
 
         getContentPane().add(panelId);
 
         JPanel panelSenha = new JPanel();
         panelSenha.setLayout(new BoxLayout(panelSenha, BoxLayout.X_AXIS));
         panelSenha.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelSenha.setBackground(Color.white);
 
         panelSenha.add(new JLabel("Senha: "));
         campoSenha = new JPasswordField();
         campoSenha.setColumns(10);
+        campoSenha.setBackground(Color.lightGray);
         panelSenha.add(campoSenha);
+
+        panelSenha.add(Box.createRigidArea(new Dimension(150, 0)));
 
         getContentPane().add(panelSenha);
 
