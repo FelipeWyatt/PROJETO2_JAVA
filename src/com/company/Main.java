@@ -60,6 +60,9 @@ public class Main {
         System.out.println(((ContaInvestidor) c3.getConta()).verInvestimentos());
 
          */
+
+        setDataAtual(new GregorianCalendar(2021, 2, 19));
+
         // Cria a tela 3
         Cliente c3 = Admin.getClientes().get(2);
         TelaInvestimentos tela3 = new TelaInvestimentos(c3);
@@ -85,14 +88,6 @@ public class Main {
             }
         });
 
-        /*
-        if(salvaClientes()){
-            System.out.println("Dados salvos com Sucesso!");
-        } else {
-            System.out.println("Erro! Dados não foram salvos.");
-        }
-
-         */
 
         /*
         for(Acoes acao : Acoes.values()){
