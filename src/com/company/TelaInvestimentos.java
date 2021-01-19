@@ -26,7 +26,7 @@ public class TelaInvestimentos extends JFrame {
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS)); // Painel principal
-        setResizable(false);
+        setResizable(true);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(5, 20, 20, 20));
 
         JLabel labelTitulo = new JLabel("SEUS INVESTIMENTOS");
@@ -159,6 +159,8 @@ public class TelaInvestimentos extends JFrame {
                                 null, JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
+                labelAtivoSelecionado.setText("");
+                pack(); // Redimensiona a janela
             }
         });
         panelVenda.add(btVender);
@@ -237,6 +239,69 @@ public class TelaInvestimentos extends JFrame {
 
         JButton btCompra = new JButton("Comprar");
         btCompra.setBackground(Color.white);
+        btCompra.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!listAcoesCompra.isSelectionEmpty()){
+                    DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
+                    Acoes acaoSelecionada = acoesCompra[listAcoesCompra.getSelectedIndex()];
+                    String qtdString = JOptionPane.showInputDialog(
+                            "Quantas unidades de " + acaoSelecionada.getTicker() + " a R$" +
+                                    d1.format(acaoSelecionada.precoTempoReal()) + " deseja comprar ?");
+                    int qtd = -1;
+                    try{
+                        qtd = Integer.parseInt(qtdString);
+                    } catch (NumberFormatException erro){
+                        JOptionPane.showMessageDialog(null,
+                                "Quantidade inválida! Digite um inteiro para a quantidade.", null, JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    if(!contaCliente.comprarAcao(acaoSelecionada, qtd)){
+                        // Não foi possível comprar
+                        JOptionPane.showMessageDialog(null,
+                                "Não foi possível comprar a ação.", null, JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        // Atualiza o modelo da lista de ações do usuário que atualiza no Jlist automaticamente
+                        modeloAcoesString.clear();
+                        modeloAcoesString.addAll(contaCliente.getAcoesString());
+                        acoesCliente = contaCliente.getAcoes(); // Atualiza a lista
+                        JOptionPane.showMessageDialog(null,
+                                "Ação comprada com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
+                                null, JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else if(!listRFCompra.isSelectionEmpty()){
+                    DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
+                    AtivosRF RFSelecionado = RFCompra[listRFCompra.getSelectedIndex()];
+
+                    String montanteString = JOptionPane.showInputDialog(
+                            "Quanto quer aplicar em " + RFSelecionado.getNome() + " ?");
+
+                    float montante = -1;
+                    try{
+                        montante = Float.parseFloat(montanteString);
+                    } catch (NumberFormatException erro){
+                        JOptionPane.showMessageDialog(null,
+                                "Valor inválido! Digite um número.", null, JOptionPane.ERROR_MESSAGE);
+                    }
+                    if(!contaCliente.comprarRF(RFSelecionado, montante)){
+                        // Não foi possível vender
+                        JOptionPane.showMessageDialog(null,
+                                "Não foi possível comprar o investimento em Renda Fixa.", null, JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        // Atualiza o modelo da lista de ações do usuário que atualiza no Jlist automaticamente
+                        modeloRFString.clear();
+                        modeloRFString.addAll(contaCliente.getRFString());
+                        RFCliente = contaCliente.getRF(); // Atualiza a lista
+                        JOptionPane.showMessageDialog(null,
+                                "Investimento comprado com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
+                                null, JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                labelCompraSelecionado.setText("");
+                pack(); // Redimensiona a janela
+            }
+        });
+
         panelCompra.add(btCompra);
 
         getContentPane().add(panelCompra);

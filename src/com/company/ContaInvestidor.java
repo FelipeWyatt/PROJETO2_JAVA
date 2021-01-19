@@ -16,7 +16,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
     // METODOS
     public boolean comprarRF(AtivosRF ativo, float montante) {
-    	if (getDono().getStatus() && getSaldo() >= montante) {
+    	if (getDono().getStatus() && getSaldo() >= montante && montante > 0) {
 		    // Implementação de polimosfismo pois ArrayList de Investimento contém Acao e RF
 	        Investimento novo_investimento = new RendaFixa(montante, new GregorianCalendar(), ativo);
 	        investimentos.add(novo_investimento);
@@ -56,7 +56,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     public boolean comprarAcao(Acoes acao, int quantidade) {
         float montante = acao.precoTempoReal()*quantidade;
 
-        if(getDono().getStatus()  && getSaldo() >= montante ){
+        if(getDono().getStatus()  && getSaldo() >= montante && montante > 0){
             // Verifica se investimentos já contém essa ação
             for(Investimento i: investimentos){
                 if(i instanceof Acao){
