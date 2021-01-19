@@ -192,6 +192,21 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         return saida;
     }
 
+    public ArrayList<String> getRFString(){
+        // Usado em TelaInvestimentos
+        DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
+        Collections.sort(investimentos); // ordena a lista do maior para o menor montante
+        ArrayList<String> saida = new ArrayList<String>();
+
+        for (Investimento i : investimentos){
+            if (i instanceof RendaFixa) {
+                saida.add("- " + ((RendaFixa) i).getAtivo() + ": R$" + d1.format(i.getMontante()));
+            }
+        }
+
+        return saida;
+    }
+
     //GETTERS E SETTERS
     public ArrayList<Investimento> getInvestimentos () { return investimentos; }
     // Nao faz sentido ter um set para um ArrayList
