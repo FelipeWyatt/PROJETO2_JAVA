@@ -61,7 +61,11 @@ public class Main {
 
          */
 
-        setDataAtual(new GregorianCalendar(2021, 2, 19));
+        //setDataAtual(new GregorianCalendar(2021, 2, 19));
+
+        TelaLogin dialog = new TelaLogin();
+        dialog.pack();
+        dialog.setVisible(true);
 
         // Cria a tela 3
         Cliente c3 = Admin.getClientes().get(2);
