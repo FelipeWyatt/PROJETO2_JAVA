@@ -1,5 +1,10 @@
 package com.company;
 
+import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -51,8 +56,10 @@ public class Main {
         ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.AMAZON, 4);
         ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.APPLE, 3);
 
+
         System.out.println(((ContaInvestidor) c3.getConta()).verInvestimentos());
-        */
+
+         */
         // Cria a tela 3
         Cliente c3 = Admin.getClientes().get(2);
         TelaInvestimentos tela3 = new TelaInvestimentos(c3);
@@ -61,13 +68,31 @@ public class Main {
         tela3.setVisible(true);
 
 
+        tela3.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                super.windowOpened(e);
+            }
 
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                if(salvaClientes()){
+                    System.out.println("Dados salvos com Sucesso!");
+                } else {
+                    System.out.println("Erro! Dados não foram salvos.");
+                }
+            }
+        });
 
+        /*
         if(salvaClientes()){
             System.out.println("Dados salvos com Sucesso!");
         } else {
             System.out.println("Erro! Dados não foram salvos.");
         }
+
+         */
 
         /*
         for(Acoes acao : Acoes.values()){
