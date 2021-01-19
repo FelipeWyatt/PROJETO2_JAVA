@@ -16,7 +16,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
     // METODOS
     public boolean comprarRF(AtivosRF ativo, float montante) {
-    	if (getDono().getStatus() && getSaldo() >= montante) {
+    	if (getDono().getStatus() && getSaldo() >= montante && montante > 0) {
 		    // Implementação de polimosfismo pois ArrayList de Investimento contém Acao e RF
 	        Investimento novo_investimento = new RendaFixa(montante, new GregorianCalendar(), ativo);
 	        investimentos.add(novo_investimento);
@@ -56,7 +56,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
     public boolean comprarAcao(Acoes acao, int quantidade) {
         float montante = acao.precoTempoReal()*quantidade;
 
-        if(getDono().getStatus()  && getSaldo() >= montante ){
+        if(getDono().getStatus()  && getSaldo() >= montante && montante > 0){
             // Verifica se investimentos já contém essa ação
             for(Investimento i: investimentos){
                 if(i instanceof Acao){
@@ -151,6 +151,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         }
     }
 
+    // GETTERS
     public float getMontanteTotal () {
         float total = 0;
         for (Investimento i : investimentos) {
@@ -177,7 +178,34 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         return out;
     }
 
-    //GETTERS E SETTERS
+    public ArrayList<Acao> getAcoes(){
+        // Usado em TelaInvestimentos
+        Collections.sort(investimentos); // ordena a lista do maior para o menor montante
+        ArrayList<Acao> saida = new ArrayList<Acao>();
+
+        for (Investimento i : investimentos){
+            if (i instanceof Acao) {
+                saida.add((Acao) i);
+            }
+        }
+
+        return saida;
+    }
+
+    public ArrayList<RendaFixa> getRF(){
+        // Usado em TelaInvestimentos
+        Collections.sort(investimentos); // ordena a lista do maior para o menor montante
+        ArrayList<RendaFixa> saida = new ArrayList<RendaFixa>();
+
+        for (Investimento i : investimentos){
+            if (i instanceof RendaFixa) {
+                saida.add((RendaFixa) i);
+            }
+        }
+
+        return saida;
+    }
+
     public ArrayList<Investimento> getInvestimentos () { return investimentos; }
     // Nao faz sentido ter um set para um ArrayList
 }

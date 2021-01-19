@@ -2,6 +2,9 @@ package com.company;
 
 import java.io.IOException;
 import java.nio.channels.AcceptPendingException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public enum Acoes {
     TESLA("Tesla Inc.", "TSLA34", "https://www.google.com/search?q=tesla+stock&oq=tesla+stock&aqs=chrome..69i57j0i131i433j0l3j0i395l5.5058j1j7&sourceid=chrome&ie=UTF-8"),
@@ -36,6 +39,18 @@ public enum Acoes {
             System.out.println("Erro: " + erroGeral);
         }
         return -1f;
+    }
+
+    public static ArrayList<String> acoesDisponiveisString(){
+        // Usado em TelaInvestimentos
+        DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
+        ArrayList<String> saida = new ArrayList<String>();
+
+        for (Acoes i : Acoes.values()){
+            saida.add(i.getEmpresa() + ": R$" + d1.format(i.precoTempoReal()));
+        }
+
+        return saida;
     }
 
     public String getEmpresa() { return empresa; }
