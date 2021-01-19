@@ -10,7 +10,7 @@ public class Main {
     public static GregorianCalendar dataAtual = new GregorianCalendar(2020, 11, 7);
 
     public static void main(String[] args) {
-        /*
+
         if(resgataClientes()){
             System.out.println("Dados resgatados com Sucesso!");
         } else {
@@ -19,16 +19,17 @@ public class Main {
 
 
         for(Cliente c : Admin.getClientes()){
-            System.out.println(c.getConta());
+            System.out.println(c);
         }
 
+        /*
         for(Acoes a:Acoes.values()){
             System.out.println(a + " ");
         }
 
         */
 
-
+        /*
         Admin.novoCliente("Felipe", "abcd", 19, Sexo.MASCULINO, "Engenheiro", 5000f);
         Cliente c1 = Admin.getClientes().get(0);
         Admin.novoCliente("Matheus", "02", 13, Sexo.MASCULINO, "Engenheiro", 40000f);
@@ -42,7 +43,7 @@ public class Main {
         c4.abrirConta(1); // Conta Corrente
 
 
-        //Cliente c3 = Admin.getClientes().get(2);
+
         ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.TESOURO_SELIC, 500f);
         ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.LCI_CAIXA, 600f);
         ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.LCI_CAIXA, 350f);
@@ -50,11 +51,10 @@ public class Main {
         ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.AMAZON, 4);
         ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.APPLE, 3);
 
-
-
         System.out.println(((ContaInvestidor) c3.getConta()).verInvestimentos());
-
+        */
         // Cria a tela 3
+        Cliente c3 = Admin.getClientes().get(2);
         TelaInvestimentos tela3 = new TelaInvestimentos(c3);
         //tela3.setSize(300, 300);
         tela3.pack();
