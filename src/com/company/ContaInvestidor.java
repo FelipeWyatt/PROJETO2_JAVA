@@ -177,6 +177,20 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
         return out;
     }
 
+    public ArrayList<Acao> getAcoes(){
+        // Usado em TelaInvestimentos
+        Collections.sort(investimentos); // ordena a lista do maior para o menor montante
+        ArrayList<Acao> saida = new ArrayList<Acao>();
+
+        for (Investimento i : investimentos){
+            if (i instanceof Acao) {
+                saida.add((Acao) i);
+            }
+        }
+
+        return saida;
+    }
+
     public ArrayList<String> getAcoesString(){
         // Usado em TelaInvestimentos
         DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
@@ -185,12 +199,26 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
         for (Investimento i : investimentos){
             if (i instanceof Acao) {
-                saida.add("- " + ((Acao) i).getAcao().getEmpresa() + ": R$" + d1.format(i.getMontante()));
+                saida.add(((Acao) i).getAcao().getTicker() + " (x" + ((Acao) i).getQuantidade() + ") : R$" + d1.format(i.getMontante()));
             }
         }
 
         return saida;
     }
+    public ArrayList<RendaFixa> getRF(){
+        // Usado em TelaInvestimentos
+        Collections.sort(investimentos); // ordena a lista do maior para o menor montante
+        ArrayList<RendaFixa> saida = new ArrayList<RendaFixa>();
+
+        for (Investimento i : investimentos){
+            if (i instanceof RendaFixa) {
+                saida.add((RendaFixa) i);
+            }
+        }
+
+        return saida;
+    }
+
 
     public ArrayList<String> getRFString(){
         // Usado em TelaInvestimentos
@@ -200,7 +228,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
         for (Investimento i : investimentos){
             if (i instanceof RendaFixa) {
-                saida.add("- " + ((RendaFixa) i).getAtivo() + ": R$" + d1.format(i.getMontante()));
+                saida.add(((RendaFixa) i).getAtivo().getNome() + ": R$" + d1.format(i.getMontante()));
             }
         }
 

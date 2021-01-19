@@ -45,6 +45,7 @@ public class Main {
         //Cliente c3 = Admin.getClientes().get(2);
         ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.TESOURO_SELIC, 500f);
         ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.LCI_CAIXA, 600f);
+        ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.LCI_CAIXA, 350f);
         ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.TESLA, 5);
         ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.AMAZON, 4);
         ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.APPLE, 3);

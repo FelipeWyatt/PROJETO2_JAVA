@@ -36,16 +36,21 @@ public class TelaInvestimentos extends JFrame {
 
         // Lista de ações do cliente
         // Tratar caso em que cliente não tem ações
-        ArrayList<String> acoesCliente = contaCliente.getAcoesString();
-        listAcoes = new JList<String>(acoesCliente.toArray(new String[0]));
+        ArrayList<String> acoesClienteString = contaCliente.getAcoesString();
+        ArrayList<Acao> acoesCliente = contaCliente.getAcoes();
+        listAcoes = new JList<String>(acoesClienteString.toArray(new String[0]));
         listAcoes.setBackground(getBackground());
         listAcoes.setAlignmentY(Component.TOP_ALIGNMENT);
         listAcoes.setAlignmentX(Component.LEFT_ALIGNMENT);
         listAcoes.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                listRF.clearSelection(); // desseleciona a outra lista
-                labelAtivoSelecionado.setText(listAcoes.getSelectedValue());
+                // Deve-se verificar pois o listener de listRF é ativado quando listRF.clearSelection()
+                if(!listAcoes.isSelectionEmpty()){
+                    listRF.clearSelection(); // desseleciona a outra lista
+                    Acao acaoSelecionada = acoesCliente.get(listAcoes.getSelectedIndex());
+                    labelAtivoSelecionado.setText(acaoSelecionada.getAcao().getTicker());
+                }
             }
         });
 
@@ -56,16 +61,21 @@ public class TelaInvestimentos extends JFrame {
 
         // Lista de RF do cliente
         // Tratar caso em que cliente não tem RF
-        ArrayList<String> RFCliente = contaCliente.getRFString();
-        listRF = new JList<String>(RFCliente.toArray(new String[0]));
+        ArrayList<String> RFClienteString = contaCliente.getRFString();
+        ArrayList<RendaFixa> RFCliente = contaCliente.getRF();
+        listRF = new JList<String>(RFClienteString.toArray(new String[0]));
         listRF.setBackground(getBackground());
         listRF.setAlignmentY(Component.TOP_ALIGNMENT);
         listRF.setAlignmentX(Component.LEFT_ALIGNMENT);
         listRF.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                listAcoes.clearSelection();
-                labelAtivoSelecionado.setText(listRF.getSelectedValue());
+                // Deve-se verificar pois o listener de listAcoes é ativado quando listAcoes.clearSelection()
+                if(!listRF.isSelectionEmpty()){
+                    listAcoes.clearSelection();
+                    RendaFixa rendaFixaSelecionada = RFCliente.get(listRF.getSelectedIndex());
+                    labelAtivoSelecionado.setText(rendaFixaSelecionada.getAtivo().getNome() + " (" + rendaFixaSelecionada.getMontante() + ")");
+                }
             }
         });
         panelListas.add(listRF);
@@ -98,7 +108,7 @@ public class TelaInvestimentos extends JFrame {
         getContentPane().add(labelInvestimentosDisponiv);
 
         JPanel panelListasCompra = new JPanel();
-        panelListasCompra.setLayout(new BoxLayout(panelListas, BoxLayout.X_AXIS));
+        panelListasCompra.setLayout(new BoxLayout(panelListasCompra, BoxLayout.X_AXIS));
         panelListasCompra.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Lista de ações do cliente
@@ -115,7 +125,7 @@ public class TelaInvestimentos extends JFrame {
             }
         });
 
-        panelListasCompra.add(listAcoes);
+        panelListasCompra.add(listAcoesCompra);
 
         getContentPane().add(panelListasCompra);
 
