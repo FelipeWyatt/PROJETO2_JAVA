@@ -7,8 +7,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class TelaInvestimentos extends JFrame {
-    private JList<String> listAcoes, listRF, listAcoesCompra;
-    private JLabel labelAtivoSelecionado;
+    private JList<String> listAcoes, listRF, listAcoesCompra, listRFCompra;
+    private JLabel labelAtivoSelecionado, labelCompraSelecionado;
     private Cliente clienteInvestidor;
     private ContaInvestidor contaCliente;
 
@@ -113,21 +113,67 @@ public class TelaInvestimentos extends JFrame {
 
         // Lista de ações do cliente
         // Tratar caso em que cliente não tem ações
-        ArrayList<String> acoesCompra = Acoes.acoesDisponiveisString();
-        listAcoesCompra = new JList<String>(acoesCompra.toArray(new String[0]));
+        ArrayList<String> acoesCompraString = Acoes.acoesDisponiveisString();
+        Acoes[] acoesCompra = Acoes.values();
+        listAcoesCompra = new JList<String>(acoesCompraString.toArray(new String[0]));
         listAcoesCompra.setBackground(getBackground());
         listAcoesCompra.setAlignmentY(Component.TOP_ALIGNMENT);
         listAcoesCompra.setAlignmentX(Component.LEFT_ALIGNMENT);
         listAcoesCompra.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                ;
+                if(!listAcoesCompra.isSelectionEmpty()){
+                    listRFCompra.clearSelection(); // desseleciona a outra lista
+                    Acoes acaoSelecionada = acoesCompra[(listAcoesCompra.getSelectedIndex())];
+                    labelCompraSelecionado.setText(acaoSelecionada.getTicker());
+                }
             }
         });
 
         panelListasCompra.add(listAcoesCompra);
 
+        // Caixa de espaçamento entre as listas
+        panelListasCompra.add(Box.createRigidArea(new Dimension(30,0)));
+
+        // Lista de RF do cliente
+        // Tratar caso em que cliente não tem RF
+        ArrayList<String> RFCompraString = AtivosRF.RFDisponiveisString();
+        AtivosRF[] RFCompra = AtivosRF.values();
+        listRFCompra = new JList<String>(RFCompraString.toArray(new String[0]));
+        listRFCompra.setBackground(getBackground());
+        listRFCompra.setAlignmentY(Component.TOP_ALIGNMENT);
+        listRFCompra.setAlignmentX(Component.LEFT_ALIGNMENT);
+        listRFCompra.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if(!listRFCompra.isSelectionEmpty()){
+                    listAcoesCompra.clearSelection(); // desseleciona a outra lista
+                    AtivosRF RFSelecionado = RFCompra[(listRFCompra.getSelectedIndex())];
+                    labelCompraSelecionado.setText(RFSelecionado.getNome());
+                }
+            }
+        });
+
+        panelListasCompra.add(listRFCompra);
+
         getContentPane().add(panelListasCompra);
+
+        JPanel panelCompra = new JPanel();
+        panelCompra.setLayout(new BoxLayout(panelCompra, BoxLayout.X_AXIS));
+        panelCompra.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        panelCompra.add(new JLabel("Ativo selecionado: "));
+
+        labelCompraSelecionado = new JLabel("");
+        panelCompra.add(labelCompraSelecionado);
+
+        panelCompra.add(Box.createHorizontalGlue()); // Componente para layout
+
+        JButton btCompra = new JButton("Comprar");
+        btCompra.setBackground(Color.white);
+        panelCompra.add(btCompra);
+
+        getContentPane().add(panelCompra);
 
     }
 
