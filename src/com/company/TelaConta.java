@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class TelaConta extends JFrame {
     private Cliente cliente;
     private ContaBancaria contaCliente;
-
     private DefaultListModel<String> modeloDadosCliente;
 
     public TelaConta(Cliente c){

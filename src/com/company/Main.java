@@ -2,19 +2,24 @@ package com.company;
 
 import javax.swing.*;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class Main {
     // Tudo static porque Main nao e instanciada
-    public static GregorianCalendar dataAtual = new GregorianCalendar(2020, 11, 7);
-
+    public static GregorianCalendar dataAtual = new GregorianCalendar();
 
     public static void main(String[] args) {
 
         if(resgataClientes()){
-            //System.out.println("Dados resgatados com Sucesso!");
-            // Inicia TelaLogin, que eventualmente chama as outras telas
-            TelaLogin telaLogin = new TelaLogin();
+            //setDataAtual(new GregorianCalendar(2021, 2, 21));
+            rendeTudo();
+
+            TelaLogin telaLogin = new TelaLogin(); // Inicia TelaLogin, que eventualmente chama as outras telas
 
         } else {
             // Caso não funcione resgatar os clientes pelo arquivo clientes.dat
@@ -99,26 +104,58 @@ public class Main {
     }
 
 
-    public static void rendeTudo(GregorianCalendar ultimaVezQueRendeu){
-        // Atualiza todos os valores de todas as contas de todos os clientes
-        // Deve ser chamado uma vez ao dia. Para fins de teste do sistema foi criado o metodo Main.setDataAtual
-        int diasPassados = (int) Data.diasEntre(ultimaVezQueRendeu, dataAtual); //POR QUE LONG?
+    public static void rendeTudo(){
+        // Atualiza todos os valores de todas as contas de todos os clientes e salva no arquivo a ultima vez que rendeu
+        //para impedir que renda mais de uma vez no dia caso o programa for executado novamente
+        // Para fins de teste do sistema foi criado o metodo Main.setDataAtual
 
-        for(Cliente cliente : Admin.getClientes()){
-            // Percorre todos os clientes, que estao guardados no ArrayList do Admin
-            if(cliente.getStatus()){ // Se cliente esta ativo, rende sua conta
-                // Polimorfismo presente na utilização do método rendeConta, que funciona independente do
-                // tipo de conta, já que a classe ContaBancaria se tornou abstrata.
-                cliente.getConta().rendeConta(diasPassados);
+        try{
+            // Recupera no arquivo a data da ultima vez que rendeu
+            BufferedReader arqData = new BufferedReader(new FileReader("ultima_vez_que_rendeu.txt"));
+            String[] ultimaVezQueRendeuString = arqData.readLine().split(",");
+            arqData.close();
+            int dia = Integer.parseInt(ultimaVezQueRendeuString[0]);
+            int mes = Integer.parseInt(ultimaVezQueRendeuString[1]);
+            int ano = Integer.parseInt(ultimaVezQueRendeuString[2]);
+
+            // Obtem o objeto GregorianCalendar da ultima vez que rendeu que estava guardada no arquivo
+            GregorianCalendar ultimaVezQueRendeu = new GregorianCalendar(ano, mes, dia);
+
+            int diasPassados = (int) Data.diasEntre(ultimaVezQueRendeu, dataAtual); //POR QUE LONG?
+            System.out.println(diasPassados);
+            if (diasPassados > 0){
+                // diasPassados = 0 se ja rendeu hoje
+                for(Cliente cliente : Admin.getClientes()){
+                    // Percorre todos os clientes, que estao guardados no ArrayList do Admin
+                    if(cliente.getStatus()){ // Se cliente esta ativo, rende sua conta
+                        // Polimorfismo presente na utilização do método rendeConta, que funciona independente do
+                        // tipo de conta, já que a classe ContaBancaria se tornou abstrata.
+                        cliente.getConta().rendeConta(diasPassados);
+                    }
+                }
             }
+
+            // Salva a data atual para como a data da ultima vez que rendeu no mesmo arquivo em que a data foi resgatada
+            BufferedWriter arqDataSaida = new BufferedWriter(new FileWriter("ultima_vez_que_rendeu.txt"));
+            arqDataSaida.write(dataAtual.get(GregorianCalendar.DAY_OF_MONTH) + "," +
+                    dataAtual.get(GregorianCalendar.MONTH) + "," +
+                    dataAtual.get(GregorianCalendar.YEAR));
+            arqDataSaida.flush();
+            arqDataSaida.close();
+
+
+        } catch(Exception erro){
+            JOptionPane.showMessageDialog(null,
+                    "Não foi possível render as contas. Contactar gerenciador do sistema", null, JOptionPane.ERROR_MESSAGE);
+            erro.printStackTrace();
+            System.exit(-1);
         }
+
     }
 
     public static void setDataAtual(GregorianCalendar novaData){
-        // Metodo para fins de testes, para definir a data do sistema e analisar os rendimentos dos investimentos
-        GregorianCalendar dataAntiga = dataAtual;
+        // altera a data atual para mostrar funcionamento do sistema
         dataAtual = novaData;
-        rendeTudo(dataAntiga); // Compara com a data atual
     }
 
     public static boolean salvaClientes(){

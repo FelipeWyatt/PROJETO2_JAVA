@@ -15,8 +15,8 @@ public class TelaInvestimentos extends JFrame {
     private JList<String> listAcoes, listRF, listAcoesCompra, listRFCompra;
     private JLabel labelAtivoSelecionado, labelCompraSelecionado;
     private DefaultListModel<String> modeloAcoesString, modeloRFString;
-    private TelaConta telaQueChamou;
 
+    private TelaConta telaQueChamou;
     private ArrayList<Acao> acoesCliente;
     private ArrayList<RendaFixa> RFCliente;
     private Acoes[] acoesCompra;
