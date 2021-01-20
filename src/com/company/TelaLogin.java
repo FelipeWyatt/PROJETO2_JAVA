@@ -10,8 +10,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class TelaLogin extends JDialog {
-    private JPanel contentPane;
-    private JButton buttonOK, buttonCancel;
+    private JButton buttonOK;
     private JTextField campoLogin;
     private JPasswordField campoSenha;
 

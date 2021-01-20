@@ -267,7 +267,7 @@ public class TelaInvestimentos extends JFrame {
         RFCompra = AtivosRF.values();
 
         // Setando o Frame
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS)); // Painel principal
         setResizable(true);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(5, 20, 20, 20));

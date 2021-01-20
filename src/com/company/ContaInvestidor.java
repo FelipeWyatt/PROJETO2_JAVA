@@ -153,6 +153,7 @@ public class ContaInvestidor extends ContaBancaria { // Tem acesso a investiment
 
     // GETTERS
     public float getMontanteTotal () {
+        // Dinheiro investido
         float total = 0;
         for (Investimento i : investimentos) {
             total += i.getMontante();

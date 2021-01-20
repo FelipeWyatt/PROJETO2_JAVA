@@ -63,10 +63,28 @@ public class Main {
 
 
         //setDataAtual(new GregorianCalendar(2021, 2, 19));
+        Cliente c1 = Admin.getClientes().get(0);
+        Cliente c2 = Admin.getClientes().get(1);
+        Cliente c3 = Admin.getClientes().get(2);
+
+        TelaConta TConta1 = new TelaConta(c1);
+        TConta1.pack();
+        TConta1.setVisible(true);
+
+        TelaConta TConta2 = new TelaConta(c2);
+        TConta2.pack();
+        TConta2.setVisible(true);
+
+        TelaConta TConta3 = new TelaConta(c3);
+        TConta3.pack();
+        TConta3.setVisible(true);
+
 
         TelaLogin dialog = new TelaLogin();
         dialog.pack();
         dialog.setVisible(true);
+
+
 
         /*
         // Cria a tela 3
