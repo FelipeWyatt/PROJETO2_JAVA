@@ -1,6 +1,7 @@
 package com.company;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -43,7 +44,8 @@ public class TelaInvestimentos extends JFrame {
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS)); // Painel principal
         setResizable(true);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(5, 20, 20, 20));
-        ImageIcon logo = new ImageIcon("Icone_carteira.png");
+        getContentPane().setBackground(Color.white); getRootPane().setBackground(Color.white);
+        ImageIcon logo = new ImageIcon("imagens/Icone_carteira.png");
         setIconImage(logo.getImage());
 
         // Título 1
@@ -110,6 +112,7 @@ public class TelaInvestimentos extends JFrame {
         JLabel labelTitulo = new JLabel(texto);
         labelTitulo.setFont(new Font(labelTitulo.getFont().getName(), Font.PLAIN, fonte));
         labelTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelTitulo.setBackground(Color.white);
         return labelTitulo;
     }
 
@@ -117,6 +120,7 @@ public class TelaInvestimentos extends JFrame {
         JPanel panelListas = new JPanel();
         panelListas.setLayout(new BoxLayout(panelListas, BoxLayout.X_AXIS));
         panelListas.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelListas.setBackground(Color.white);
         return panelListas;
     }
 
@@ -124,6 +128,7 @@ public class TelaInvestimentos extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.setBackground(Color.white);
         return panel;
     }
 
@@ -133,7 +138,8 @@ public class TelaInvestimentos extends JFrame {
         modeloAcoesString.addAll(getAcoesString(clienteInvestidor));
 
         listAcoes = new JList<String>(modeloAcoesString);
-        listAcoes.setBackground(getBackground());
+        listAcoes.setBackground(Color.white);
+        listAcoes.setToolTipText("Ações");
         listAcoes.setAlignmentY(Component.TOP_ALIGNMENT);
         listAcoes.setAlignmentX(Component.LEFT_ALIGNMENT);
         listAcoes.addListSelectionListener(new ListSelectionListener() {
@@ -155,7 +161,8 @@ public class TelaInvestimentos extends JFrame {
         modeloRFString.addAll(getRFString(clienteInvestidor));
 
         listRF = new JList<String>(modeloRFString);
-        listRF.setBackground(getBackground());
+        listRF.setBackground(Color.white);
+        listRF.setToolTipText("Renda Fixa");
         listRF.setAlignmentY(Component.TOP_ALIGNMENT);
         listRF.setAlignmentX(Component.LEFT_ALIGNMENT);
         listRF.addListSelectionListener(new ListSelectionListener() {
@@ -173,7 +180,7 @@ public class TelaInvestimentos extends JFrame {
 
     private JButton btVender(){
         JButton btVender = new JButton("Vender");
-        btVender.setBackground(Color.white);
+        btVender.setBackground(Color.lightGray);
         btVender.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -236,7 +243,8 @@ public class TelaInvestimentos extends JFrame {
         ArrayList<String> acoesCompraString = Acoes.acoesDisponiveisString();
 
         listAcoesCompra = new JList<String>(acoesCompraString.toArray(new String[0]));
-        listAcoesCompra.setBackground(getBackground());
+        listAcoesCompra.setBackground(Color.white);
+        listAcoesCompra.setToolTipText("Ações");
         listAcoesCompra.setAlignmentY(Component.TOP_ALIGNMENT);
         listAcoesCompra.setAlignmentX(Component.LEFT_ALIGNMENT);
         listAcoesCompra.addListSelectionListener(new ListSelectionListener() {
@@ -257,7 +265,8 @@ public class TelaInvestimentos extends JFrame {
         ArrayList<String> RFCompraString = AtivosRF.RFDisponiveisString();
 
         listRFCompra = new JList<String>(RFCompraString.toArray(new String[0]));
-        listRFCompra.setBackground(getBackground());
+        listRFCompra.setBackground(Color.white);
+        listRFCompra.setToolTipText("Renda Fixa");
         listRFCompra.setAlignmentY(Component.TOP_ALIGNMENT);
         listRFCompra.setAlignmentX(Component.LEFT_ALIGNMENT);
         listRFCompra.addListSelectionListener(new ListSelectionListener() {
@@ -274,7 +283,7 @@ public class TelaInvestimentos extends JFrame {
 
     private JButton btCompra(){
         JButton btCompra = new JButton("Comprar");
-        btCompra.setBackground(Color.white);
+        btCompra.setBackground(Color.lightGray);
         btCompra.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

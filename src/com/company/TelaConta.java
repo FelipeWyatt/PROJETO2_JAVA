@@ -24,8 +24,8 @@ public class TelaConta extends JFrame {
         setBackground(Color.white);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(5, 20, 20, 20));
         getContentPane().setBackground(Color.white);
-        //ImageIcon logo = new ImageIcon("Icone_carteira.png");
-        //setIconImage(logo.getImage());
+        ImageIcon logo = new ImageIcon("imagens/Icone_moeda.png");
+        setIconImage(logo.getImage());
 
         String titulo = "Conta";
         if(contaCliente instanceof ContaCorrente) titulo = "Conta Corrente";

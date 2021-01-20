@@ -1,8 +1,6 @@
 package com.company;
 
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.*;
 import java.util.GregorianCalendar;
 
@@ -24,6 +22,7 @@ public class Main {
                     "Não foi possível acessar os dados dos clientes.", null, JOptionPane.WARNING_MESSAGE);
         }
 
+        // CÓDIGO PARA DEMONSTRAÇÃO DE FUNÇÕES
         /*
         //Novo Cliente:
         Admin.novoCliente("Renata", "adbc", 24, Sexo.FEMININO, "PED", 3000f);
@@ -65,59 +64,14 @@ public class Main {
         else System.out.println("Nao foi possivel fazer o deposito!");
         System.out.println(c5); // Agora cliente esta ativo, entao Saldo = 5000 + 1280
 
-         */
-
-
-        /*
         //setDataAtual(new GregorianCalendar(2021, 2, 19));
-        Cliente c1 = Admin.getClientes().get(0);
-        Cliente c2 = Admin.getClientes().get(1);
-        Cliente c3 = Admin.getClientes().get(2);
-
-        TelaConta TConta1 = new TelaConta(c1);
-        TConta1.pack();
-        TConta1.setVisible(true);
-
-        TelaConta TConta2 = new TelaConta(c2);
-        TConta2.pack();
-        TConta2.setVisible(true);
-
-        TelaConta TConta3 = new TelaConta(c3);
-        TConta3.pack();
-        TConta3.setVisible(true);
 
          */
-
 
 
         /*
+        // Alguns clientes pré-determinados
 
-
-        tela3.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                super.windowOpened(e);
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-                if(salvaClientes()){
-                    System.out.println("Dados salvos com Sucesso!");
-                } else {
-                    System.out.println("Erro! Dados não foram salvos.");
-                }
-            }
-        });
-
-         */
-
-
-
-
-
-         /*
-        // Alguns objetos do sistema
         Admin.novoCliente("Felipe", "abcd", 19, Sexo.MASCULINO, "Engenheiro", 5000f);
         Cliente c1 = Admin.getClientes().get(0);
         Admin.novoCliente("Matheus", "02", 13, Sexo.MASCULINO, "Engenheiro", 40000f);

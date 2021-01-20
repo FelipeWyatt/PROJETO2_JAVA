@@ -25,7 +25,7 @@ public class TelaLogin extends JDialog {
 
         try{
             // Adiciona a imagem com o logo do projeto
-            BufferedImage logoBuff = ImageIO.read(new File("logoBankCamp.png"));
+            BufferedImage logoBuff = ImageIO.read(new File("imagens/logoBankCamp.png"));
 
             JLabel logoLabel = new JLabel(new ImageIcon(logoBuff));
             getContentPane().add(logoLabel);
