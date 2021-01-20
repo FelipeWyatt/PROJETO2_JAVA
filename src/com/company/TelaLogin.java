@@ -110,7 +110,22 @@ public class TelaLogin extends JDialog {
                     dispose();
                     // Abre a TelaConta do Cliente
                     TelaConta telaConta = new TelaConta(clienteValidado);
+                    // Quando TelaConta fecha, finaliza-se a execução do programa e então salva-se todos os objetos do sistema chamando Main.salvaClientes()
+                    telaConta.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            super.windowClosing(e);
+                            if(Main.salvaClientes()){
+                                //System.out.println("Dados salvos com Sucesso!");
+                            } else {
+                                // Caso não funcione resgatar os clientes pelo arquivo clientes.dat
+                                JOptionPane.showMessageDialog(null,
+                                        "Não foi possível salvar os dados do cliente, dados criados nessa execução foram perdidos.", null, JOptionPane.WARNING_MESSAGE);
+                            }
+                        }
+                    });
                     telaConta.pack();
+                    telaConta.setLocation(400, 250); // Posição inicial da TelaConta no monitor do pc
                     telaConta.setVisible(true);
                 }
             }
@@ -119,6 +134,10 @@ public class TelaLogin extends JDialog {
         panelColunas.add(buttonOK);
 
         getContentPane().add(panelColunas);
+
+        pack();
+        setLocation(500, 70);
+        setVisible(true);
 
     }
 }

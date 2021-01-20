@@ -70,6 +70,7 @@ public class TelaConta extends JFrame {
                     // Abre a tela dos investimentos
                     TelaInvestimentos telaInvestimentos = new TelaInvestimentos(cliente, telaQueChamou);
                     telaInvestimentos.pack();
+                    telaInvestimentos.setLocation(920, 250); // Posição inicial da TelaConta no monitor do pc
                     telaInvestimentos.setVisible(true);
                 }
             });
@@ -162,6 +163,9 @@ public class TelaConta extends JFrame {
             if(cliente.getConta() instanceof ContaInvestidor){
                 dados.add("Saldo em conta: R$ " + d1.format(cliente.getConta().getSaldo()));
                 dados.add("Dinheiro investido: R$ " + d1.format(((ContaInvestidor) cliente.getConta()).getMontanteTotal()));
+            } else if(cliente.getConta() instanceof ContaPoupanca){
+                float rent = (float) Math.round(ContaPoupanca.getRendimentoDiario()*1000000)/10000; // Arredonda para 3 casas decimais
+                dados.add("Rendimento diário da Poupança: " + rent + " %");
             }
         } else {
             dados.add("Cliente não tem conta!");

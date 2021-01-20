@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
@@ -13,9 +14,14 @@ public class Main {
     public static void main(String[] args) {
 
         if(resgataClientes()){
-            System.out.println("Dados resgatados com Sucesso!");
+            //System.out.println("Dados resgatados com Sucesso!");
+            // Inicia TelaLogin, que eventualmente chama as outras telas
+            TelaLogin telaLogin = new TelaLogin();
+
         } else {
-            System.out.println("Erro! Dados não foram resgatados.");
+            // Caso não funcione resgatar os clientes pelo arquivo clientes.dat
+            JOptionPane.showMessageDialog(null,
+                    "Não foi possível acessar os dados dos clientes.", null, JOptionPane.WARNING_MESSAGE);
         }
 
         /*
@@ -82,37 +88,9 @@ public class Main {
 
          */
 
-        Cliente c1 = Admin.getClientes().get(0);
-        Cliente c2 = Admin.getClientes().get(1);
-        Cliente c3 = Admin.getClientes().get(2);
-
-
-        TelaLogin telaLogin = new TelaLogin();
-        telaLogin.pack();
-        telaLogin.setVisible(true);
-        /*
-        telaLogin.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-                TelaConta telaConta = new TelaConta(usuAtual);
-                telaConta.pack();
-                telaConta.setVisible(true);
-            }
-        });
-
-         */
-
-        // Tela se mantém
 
 
         /*
-        // Cria a tela 3
-        Cliente c3 = Admin.getClientes().get(2);
-        TelaInvestimentos tela3 = new TelaInvestimentos(c3);
-        //tela3.setSize(300, 300);
-        tela3.pack();
-        tela3.setVisible(true);
 
 
         tela3.addWindowListener(new WindowAdapter() {
