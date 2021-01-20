@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class TelaLogin extends JDialog {
     private JPanel contentPane;
@@ -24,6 +25,7 @@ public class TelaLogin extends JDialog {
         getRootPane().setDefaultButton(buttonOK = new JButton("OK"));
 
         try{
+            // Adiciona a imagem com o logo do projeto
             BufferedImage logoBuff = ImageIO.read(new File("logoBankCamp.png"));
 
             JLabel logoLabel = new JLabel(new ImageIcon(logoBuff));
@@ -32,98 +34,88 @@ public class TelaLogin extends JDialog {
             e.printStackTrace();
         }
 
+        JPanel panelColunas = new JPanel();
+        panelColunas.setLayout(new BoxLayout(panelColunas, BoxLayout.X_AXIS));
+        panelColunas.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelColunas.setBackground(Color.white);
 
-        JPanel panelId = new JPanel();
-        panelId.setLayout(new BoxLayout(panelId, BoxLayout.X_AXIS));
-        panelId.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panelId.setBackground(Color.white);
+        JPanel panelLabels = new JPanel();
+        panelLabels.setLayout(new BoxLayout(panelLabels, BoxLayout.Y_AXIS));
+        panelLabels.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelLabels.setBackground(Color.white);
 
-        panelId.add(new JLabel("ID: "));
+        panelLabels.add(new JLabel("ID: "));
+        panelLabels.add(new JLabel("Senha: "));
 
-        panelId.add(Box.createRigidArea(new Dimension(30, 0)));
+        panelColunas.add(panelLabels);
+
+        JPanel panelEntradas = new JPanel();
+        panelEntradas.setLayout(new BoxLayout(panelEntradas, BoxLayout.Y_AXIS));
+        panelEntradas.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelEntradas.setBackground(Color.white);
 
         campoLogin = new JTextField();
         campoLogin.setColumns(10);
-        campoLogin.setBackground(Color.lightGray);
-        panelId.add(campoLogin);
+        campoLogin.setBackground(Color.white);
+        campoLogin.setBorder(BorderFactory.createMatteBorder(2,3,1,3, Color.black));
+        panelEntradas.add(campoLogin);
 
-        panelId.add(Box.createRigidArea(new Dimension(150, 0)));
-
-        getContentPane().add(panelId);
-
-        JPanel panelSenha = new JPanel();
-        panelSenha.setLayout(new BoxLayout(panelSenha, BoxLayout.X_AXIS));
-        panelSenha.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panelSenha.setBackground(Color.white);
-
-        panelSenha.add(new JLabel("Senha: "));
         campoSenha = new JPasswordField();
         campoSenha.setColumns(10);
-        campoSenha.setBackground(Color.lightGray);
-        panelSenha.add(campoSenha);
+        campoSenha.setBackground(Color.white);
+        campoSenha.setBorder(BorderFactory.createMatteBorder(1,3,2,3, Color.black));
+        panelEntradas.add(campoSenha);
 
-        panelSenha.add(Box.createRigidArea(new Dimension(150, 0)));
+        panelColunas.add(panelEntradas);
 
-        getContentPane().add(panelSenha);
+        panelColunas.add(Box.createRigidArea(new Dimension(10,0)));
 
-        JPanel panelBt = new JPanel();
-        panelBt.setLayout(new BoxLayout(panelBt, BoxLayout.X_AXIS));
-        panelBt.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        buttonOK = new JButton("OK");
+        buttonOK = new JButton("Entrar");
         buttonOK.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        buttonOK.setBackground(Color.white);
+        buttonOK.setBackground(Color.lightGray);
+        buttonOK.setSize(new Dimension(campoLogin.getHeight()*2, 30));
         buttonOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Integer login = Integer.parseInt(campoLogin.getText());
+                int login = -1;
+                try{
+                    login = Integer.parseInt(campoLogin.getText());
+                } catch (Exception erro){
+                    JOptionPane.showMessageDialog(null,
+                            "ID inválido! Digite um inteiro.", null, JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 char[] senha = campoSenha.getPassword();
-                System.out.println(senha);
 
                 Cliente clienteValidado = null;
                 for(Cliente c : Admin.getClientes()){
                     if(c.getId() == login) clienteValidado = c;
                 }
 
-//        TelaContas01 dialog = new TelaContas01();  Para Chamar Outras Telas
-//        dialog.pack();
-//        dialog.setVisible(true);
+                campoLogin.setText("");
+                campoSenha.setText("");
 
-                // Tela de Erro
-                if (clienteValidado == null || !clienteValidado.getSenha().equals(senha)) {
-                    System.out.println("Erro no Login");
-                    System.out.println(login);
-                    System.out.println(senha);
-                    return;
-                }
-                if (clienteValidado.getConta() instanceof ContaInvestidor) {
-                    System.out.println("Conta Investidor");
-                    // Chamar Tela Conta Investimento
-                } else if (clienteValidado.getConta() instanceof ContaPoupanca) {
-                    System.out.println("Conta Poupança");
-                    // Chama Tela Conta Poupança
+                // Trata as entradas
+                if(clienteValidado == null){
+                    // Não foi encontrado o Cliente com esse id
+                    JOptionPane.showMessageDialog(null,
+                            "Cliente não foi encontrado.", null, JOptionPane.WARNING_MESSAGE);
+                } else if(!Arrays.equals(senha, clienteValidado.getSenha().toCharArray())){
+                    // Senha entrada é diferente da senha do cliente
+                    JOptionPane.showMessageDialog(null,
+                            "Senha incorreta.", null, JOptionPane.WARNING_MESSAGE);
                 } else {
-                    System.out.println("Conta Corrente");
-                    // Automaticamente Conta Corrente
+                    // Senha correta para cliente
+                    // chamar tela conta
+                    System.out.println("Logado no cliente id: " + clienteValidado.getId());
                 }
             }
         });
 
+        panelColunas.add(buttonOK);
 
-        buttonCancel = new JButton("Cancelar");
-        buttonCancel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        buttonCancel.setBackground(Color.white);
-        buttonCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-
-        panelBt.add(buttonCancel);
-        panelBt.add(buttonOK);
-
-        getContentPane().add(panelBt);
+        getContentPane().add(panelColunas);
 
     }
 }
