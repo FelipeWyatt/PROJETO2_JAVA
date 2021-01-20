@@ -9,6 +9,7 @@ public class Main {
     // Tudo static porque Main nao e instanciada
     public static GregorianCalendar dataAtual = new GregorianCalendar(2020, 11, 7);
 
+
     public static void main(String[] args) {
 
         if(resgataClientes()){
@@ -61,7 +62,7 @@ public class Main {
          */
 
 
-
+        /*
         //setDataAtual(new GregorianCalendar(2021, 2, 19));
         Cliente c1 = Admin.getClientes().get(0);
         Cliente c2 = Admin.getClientes().get(1);
@@ -79,11 +80,30 @@ public class Main {
         TConta3.pack();
         TConta3.setVisible(true);
 
+         */
 
-        TelaLogin dialog = new TelaLogin();
-        dialog.pack();
-        dialog.setVisible(true);
+        Cliente c1 = Admin.getClientes().get(0);
+        Cliente c2 = Admin.getClientes().get(1);
+        Cliente c3 = Admin.getClientes().get(2);
 
+
+        TelaLogin telaLogin = new TelaLogin();
+        telaLogin.pack();
+        telaLogin.setVisible(true);
+        /*
+        telaLogin.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                TelaConta telaConta = new TelaConta(usuAtual);
+                telaConta.pack();
+                telaConta.setVisible(true);
+            }
+        });
+
+         */
+
+        // Tela se mantém
 
 
         /*
@@ -145,7 +165,6 @@ public class Main {
          */
 
     }
-
 
 
     public static void rendeTudo(GregorianCalendar ultimaVezQueRendeu){

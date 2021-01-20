@@ -106,8 +106,12 @@ public class TelaLogin extends JDialog {
                             "Senha incorreta.", null, JOptionPane.WARNING_MESSAGE);
                 } else {
                     // Senha correta para cliente
-                    // chamar tela conta
-                    System.out.println("Logado no cliente id: " + clienteValidado.getId());
+                    // Fecha essa TelaLogin
+                    dispose();
+                    // Abre a TelaConta do Cliente
+                    TelaConta telaConta = new TelaConta(clienteValidado);
+                    telaConta.pack();
+                    telaConta.setVisible(true);
                 }
             }
         });

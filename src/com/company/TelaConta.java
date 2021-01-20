@@ -63,10 +63,14 @@ public class TelaConta extends JFrame {
             JButton btInvestimentos = new JButton("Investimentos");
             btInvestimentos.setAlignmentX(Component.LEFT_ALIGNMENT);
             btInvestimentos.setBackground(Color.lightGray);
+            TelaConta telaQueChamou = this;
             btInvestimentos.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    ;
+                    // Abre a tela dos investimentos
+                    TelaInvestimentos telaInvestimentos = new TelaInvestimentos(cliente, telaQueChamou);
+                    telaInvestimentos.pack();
+                    telaInvestimentos.setVisible(true);
                 }
             });
 
@@ -82,7 +86,27 @@ public class TelaConta extends JFrame {
         btRetirar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ;
+                String valorString = JOptionPane.showInputDialog(
+                        "Quanto deseja retirar do seu saldo?");
+
+                float valor = -1;
+                try{
+                    valor = Float.parseFloat(valorString);
+                } catch (NumberFormatException erro){
+                    JOptionPane.showMessageDialog(null,
+                            "Valor inválido! Digite um número da forma XXXX.XX", null, JOptionPane.ERROR_MESSAGE);
+                }
+
+                if(valor > 0 && cliente.getConta().getSaldo() >= valor && cliente.getConta().retirar(valor)){
+                    atualizaDadosCliente(cliente);
+                    JOptionPane.showMessageDialog(null,
+                            "Valor retirado com sucesso.",
+                            null, JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Não foi possível retirar o valor.",
+                            null, JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
 
@@ -95,7 +119,27 @@ public class TelaConta extends JFrame {
         btAdicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ;
+                String valorString = JOptionPane.showInputDialog(
+                        "Quanto deseja adicionar ao seu saldo?");
+
+                float valor = -1;
+                try{
+                    valor = Float.parseFloat(valorString);
+                } catch (NumberFormatException erro){
+                    JOptionPane.showMessageDialog(null,
+                            "Valor inválido! Digite um número da forma XXXX.XX", null, JOptionPane.ERROR_MESSAGE);
+                }
+
+                if(valor > 0 && cliente.getConta().depositar(valor)){
+                    atualizaDadosCliente(cliente);
+                    JOptionPane.showMessageDialog(null,
+                            "Valor adicionado com sucesso.",
+                            null, JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Não foi possível adiocionar o valor.",
+                            null, JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
 
@@ -103,7 +147,6 @@ public class TelaConta extends JFrame {
 
 
         getContentPane().add(panelBts);
-
     }
 
     public void atualizaDadosCliente(Cliente cliente){

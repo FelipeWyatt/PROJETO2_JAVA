@@ -14,6 +14,7 @@ public class TelaInvestimentos extends JFrame {
     private JList<String> listAcoes, listRF, listAcoesCompra, listRFCompra;
     private JLabel labelAtivoSelecionado, labelCompraSelecionado;
     private DefaultListModel<String> modeloAcoesString, modeloRFString;
+    private TelaConta telaQueChamou;
 
     private ArrayList<Acao> acoesCliente;
     private ArrayList<RendaFixa> RFCliente;
@@ -21,6 +22,89 @@ public class TelaInvestimentos extends JFrame {
     private AtivosRF[] RFCompra;
     private Cliente clienteInvestidor;
     private ContaInvestidor contaCliente;
+
+
+    public TelaInvestimentos(Cliente cliente, TelaConta TQC){ // Recebe tela que chamou para poder atualizar os dados da TelaConta aberta
+        // Frame dividido em painéis para organizar o layout
+        // Objetos organizados em métodos
+        super("Investimentos");
+
+        // Atributos usados nos métodos
+        clienteInvestidor = cliente;
+        telaQueChamou = TQC;
+        contaCliente = (ContaInvestidor) clienteInvestidor.getConta();
+        acoesCliente = contaCliente.getAcoes(); // Lista de ações do cliente
+        RFCliente = contaCliente.getRF(); // Lista de investimentos RF do cliente
+        acoesCompra = Acoes.values();
+        RFCompra = AtivosRF.values();
+
+        // Setando o Frame
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS)); // Painel principal
+        setResizable(true);
+        getRootPane().setBorder(BorderFactory.createEmptyBorder(5, 20, 20, 20));
+        ImageIcon logo = new ImageIcon("Icone_carteira.png");
+        setIconImage(logo.getImage());
+
+        // Título 1
+        getContentPane().add(novoTituloJlabel("SEUS INVESTIMENTOS", 22));
+
+        // Associa a lista de ações do cliente a listAcoes
+        criaListAcoes();
+
+        // Associa a lista de RF do cliente a listRF
+        criaListRF();
+
+        // Panel 1 contém os investimentos do cliente
+        JPanel panelListas = novoListasJPanel();
+        panelListas.add(listAcoes);
+        panelListas.add(Box.createRigidArea(new Dimension(30,0))); // Caixa de espaçamento entre as listas
+        panelListas.add(listRF);
+
+        getContentPane().add(panelListas);
+
+        // Panel 2 contém o investimento selecionado e o botão de venda
+        JPanel panelVenda = novoTextoBotaoJPanel();
+        panelVenda.add(new JLabel("Ativo selecionado: "));
+        labelAtivoSelecionado = new JLabel("");
+        panelVenda.add(labelAtivoSelecionado);
+        panelVenda.add(Box.createHorizontalGlue()); // Componente para layout
+        panelVenda.add(btVender());
+
+        getContentPane().add(panelVenda);
+
+        // Distância entre Panels
+        getContentPane().add(Box.createRigidArea(new Dimension(0, 20)));
+
+        // Título 2
+        getContentPane().add(novoTituloJlabel("INVESTIMENTOS DISPONÍVEIS", 20));
+
+        // Gera lista de ações disponíveis para compra
+        criaListaAcoesCompra();
+
+        // Gera lista de investimentos RF disponíveis para compra
+        criaListaRFCompra();
+
+        // Panel 3 contém os investimentos disponíveis para compra
+        JPanel panelListasCompra = novoListasJPanel();
+        panelListasCompra.add(listAcoesCompra);
+        panelListasCompra.add(Box.createRigidArea(new Dimension(30,0))); // Caixa de espaçamento entre as listas
+        panelListasCompra.add(listRFCompra);
+
+        getContentPane().add(panelListasCompra);
+
+        // Panel 4 contém o investimento selecionado e o botão de compra
+        JPanel panelCompra = novoTextoBotaoJPanel();
+        panelCompra.add(new JLabel("Ativo selecionado: "));
+        labelCompraSelecionado = new JLabel("");
+        panelCompra.add(labelCompraSelecionado);
+        panelCompra.add(Box.createHorizontalGlue()); // Componente para layout
+        panelCompra.add(btCompra());
+
+        getContentPane().add(panelCompra);
+
+    }
+
 
     private JLabel novoTituloJlabel(String texto, int fonte){
         JLabel labelTitulo = new JLabel(texto);
@@ -116,9 +200,11 @@ public class TelaInvestimentos extends JFrame {
                         modeloAcoesString.clear();
                         modeloAcoesString.addAll(getAcoesString(clienteInvestidor));
                         acoesCliente = contaCliente.getAcoes(); // Atualiza a lista
+                        telaQueChamou.atualizaDadosCliente(clienteInvestidor); // Atualiza dados da TelaConta aberta
                         JOptionPane.showMessageDialog(null,
                                 "Ação vendida com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
                                 null, JOptionPane.INFORMATION_MESSAGE);
+
                     }
                 } else if(!listRF.isSelectionEmpty()){
                     DecimalFormat d1 = new DecimalFormat("#. 00"); //formata do jeito certo
@@ -133,6 +219,7 @@ public class TelaInvestimentos extends JFrame {
                         modeloRFString.clear();
                         modeloRFString.addAll(getRFString(clienteInvestidor));
                         RFCliente = contaCliente.getRF(); // Atualiza a lista
+                        telaQueChamou.atualizaDadosCliente(clienteInvestidor); // Atualiza dados da TelaConta aberta
                         JOptionPane.showMessageDialog(null,
                                 "Investimento vendido com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
                                 null, JOptionPane.INFORMATION_MESSAGE);
@@ -214,6 +301,7 @@ public class TelaInvestimentos extends JFrame {
                         modeloAcoesString.clear();
                         modeloAcoesString.addAll(getAcoesString(clienteInvestidor));
                         acoesCliente = contaCliente.getAcoes(); // Atualiza a lista
+                        telaQueChamou.atualizaDadosCliente(clienteInvestidor); // Atualiza dados da TelaConta aberta
                         JOptionPane.showMessageDialog(null,
                                 "Ação comprada com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
                                 null, JOptionPane.INFORMATION_MESSAGE);
@@ -230,7 +318,7 @@ public class TelaInvestimentos extends JFrame {
                         montante = Float.parseFloat(montanteString);
                     } catch (NumberFormatException erro){
                         JOptionPane.showMessageDialog(null,
-                                "Valor inválido! Digite um número.", null, JOptionPane.ERROR_MESSAGE);
+                                "Valor inválido! Digite um número da forma XXXX.XX", null, JOptionPane.ERROR_MESSAGE);
                     }
                     if(!contaCliente.comprarRF(RFSelecionado, montante)){
                         // Não foi possível vender
@@ -241,6 +329,7 @@ public class TelaInvestimentos extends JFrame {
                         modeloRFString.clear();
                         modeloRFString.addAll(getRFString(clienteInvestidor));
                         RFCliente = contaCliente.getRF(); // Atualiza a lista
+                        telaQueChamou.atualizaDadosCliente(clienteInvestidor); // Atualiza dados da TelaConta aberta
                         JOptionPane.showMessageDialog(null,
                                 "Investimento comprado com sucesso, seu novo saldo R$" + d1.format(contaCliente.getSaldo()),
                                 null, JOptionPane.INFORMATION_MESSAGE);
@@ -251,86 +340,6 @@ public class TelaInvestimentos extends JFrame {
             }
         });
         return btCompra;
-    }
-
-    public TelaInvestimentos(Cliente cliente){
-        // Frame dividido em painéis para organizar o layout
-        // Objetos organizados em métodos
-        super("Investimentos");
-
-        // Atributos usados nos métodos
-        clienteInvestidor = cliente;
-        contaCliente = (ContaInvestidor) clienteInvestidor.getConta();
-        acoesCliente = contaCliente.getAcoes(); // Lista de ações do cliente
-        RFCliente = contaCliente.getRF(); // Lista de investimentos RF do cliente
-        acoesCompra = Acoes.values();
-        RFCompra = AtivosRF.values();
-
-        // Setando o Frame
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS)); // Painel principal
-        setResizable(true);
-        getRootPane().setBorder(BorderFactory.createEmptyBorder(5, 20, 20, 20));
-        ImageIcon logo = new ImageIcon("Icone_carteira.png");
-        setIconImage(logo.getImage());
-
-        // Título 1
-        getContentPane().add(novoTituloJlabel("SEUS INVESTIMENTOS", 22));
-
-        // Associa a lista de ações do cliente a listAcoes
-        criaListAcoes();
-
-        // Associa a lista de RF do cliente a listRF
-        criaListRF();
-
-        // Panel 1 contém os investimentos do cliente
-        JPanel panelListas = novoListasJPanel();
-        panelListas.add(listAcoes);
-        panelListas.add(Box.createRigidArea(new Dimension(30,0))); // Caixa de espaçamento entre as listas
-        panelListas.add(listRF);
-
-        getContentPane().add(panelListas);
-
-        // Panel 2 contém o investimento selecionado e o botão de venda
-        JPanel panelVenda = novoTextoBotaoJPanel();
-        panelVenda.add(new JLabel("Ativo selecionado: "));
-        labelAtivoSelecionado = new JLabel("");
-        panelVenda.add(labelAtivoSelecionado);
-        panelVenda.add(Box.createHorizontalGlue()); // Componente para layout
-        panelVenda.add(btVender());
-
-        getContentPane().add(panelVenda);
-
-        // Distância entre Panels
-        getContentPane().add(Box.createRigidArea(new Dimension(0, 20)));
-
-        // Título 2
-        getContentPane().add(novoTituloJlabel("INVESTIMENTOS DISPONÍVEIS", 20));
-
-        // Gera lista de ações disponíveis para compra
-        criaListaAcoesCompra();
-
-        // Gera lista de investimentos RF disponíveis para compra
-        criaListaRFCompra();
-
-        // Panel 3 contém os investimentos disponíveis para compra
-        JPanel panelListasCompra = novoListasJPanel();
-        panelListasCompra.add(listAcoesCompra);
-        panelListasCompra.add(Box.createRigidArea(new Dimension(30,0))); // Caixa de espaçamento entre as listas
-        panelListasCompra.add(listRFCompra);
-
-        getContentPane().add(panelListasCompra);
-
-        // Panel 4 contém o investimento selecionado e o botão de compra
-        JPanel panelCompra = novoTextoBotaoJPanel();
-        panelCompra.add(new JLabel("Ativo selecionado: "));
-        labelCompraSelecionado = new JLabel("");
-        panelCompra.add(labelCompraSelecionado);
-        panelCompra.add(Box.createHorizontalGlue()); // Componente para layout
-        panelCompra.add(btCompra());
-
-        getContentPane().add(panelCompra);
-
     }
 
     public ArrayList<String> getAcoesString(Cliente cliente){
