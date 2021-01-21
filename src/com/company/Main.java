@@ -14,6 +14,16 @@ public class Main {
     public static GregorianCalendar dataAtual = new GregorianCalendar();
 
     public static void main(String[] args) {
+        /*-------------------------------------------------------------------------------------------------------------
+        O sistema contém os seguintes usuários pré-determinados, que podem sem utilizados para login:
+        (id) -> (senha)
+        1 -> abcd
+        2 -> 02
+        3 -> senha123
+        4 -> Diniz
+        5 -> asdf
+        6 -> minhasenha
+         -------------------------------------------------------------------------------------------------------------*/
 
         if(resgataClientes()){
             //setDataAtual(new GregorianCalendar(2021, 2, 21));
@@ -22,10 +32,19 @@ public class Main {
             TelaLogin telaLogin = new TelaLogin(); // Inicia TelaLogin, que eventualmente chama as outras telas
 
         } else {
-            // Caso não funcione resgatar os clientes pelo arquivo clientes.dat
-            JOptionPane.showMessageDialog(null,
-                    "Não foi possível acessar os dados dos clientes.", null, JOptionPane.WARNING_MESSAGE);
+            // Caso não funcione resgatar os clientes pelo arquivo clientes.dat, pode-se reescrever o arquivo novamente
+            //com os objetos criados para demonstração
+            int resposta;
+
+            resposta = JOptionPane.showConfirmDialog(null,
+                    "Não foi possível acessar os dados dos clientes. Desejar executar um backup dos clientes?");
+
+            if (resposta == JOptionPane.YES_OPTION){
+                backupDemonstracao();
+            }
+            System.exit(0);
         }
+
 
         // CÓDIGO PARA DEMONSTRAÇÃO DE FUNÇÕES
         /*
@@ -70,34 +89,6 @@ public class Main {
         System.out.println(c5); // Agora cliente esta ativo, entao Saldo = 5000 + 1280
 
         //setDataAtual(new GregorianCalendar(2021, 2, 19));
-
-         */
-
-
-        /*
-        // Alguns clientes pré-determinados
-
-        Admin.novoCliente("Felipe", "abcd", 19, Sexo.MASCULINO, "Engenheiro", 5000f);
-        Cliente c1 = Admin.getClientes().get(0);
-        Admin.novoCliente("Matheus", "02", 13, Sexo.MASCULINO, "Engenheiro", 40000f);
-        Cliente c2 = Admin.getClientes().get(1);
-        Cliente c3 = new Cliente("Miguelzinho", "senha123", 25, Sexo.MASCULINO, "Soldador", 10000.01f);
-        Cliente c4 = new Cliente("Pedrao", "Diniz", 34, Sexo.MASCULINO, "Tecnico do senai", 20000f);
-
-        c1.abrirConta(1); // Conta Corrente
-        c2.abrirConta(2); // Conta Poupanca
-        c3.abrirConta(3); // Conta Investidor
-        c4.abrirConta(1); // Conta Corrente
-
-        ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.TESOURO_SELIC, 500f);
-        ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.LCI_CAIXA, 600f);
-        ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.LCI_CAIXA, 350f);
-        ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.TESLA, 5);
-        ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.AMAZON, 4);
-        ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.APPLE, 3);
-
-
-        System.out.println(((ContaInvestidor) c3.getConta()).verInvestimentos());
 
          */
 
@@ -201,6 +192,34 @@ public class Main {
             System.out.println("Erro 3 lendo arquivo clientes.dat");
         }
         return false;
+    }
+
+    private static void backupDemonstracao(){
+        // Salva alguns clientes pré-determinados para demonstração do sistema
+        Cliente c1 = new Cliente("Felipe", "abcd", 19, Sexo.MASCULINO, "Engenheiro", 5000f);
+        Cliente c2 = new Cliente("Matheus", "02", 13, Sexo.MASCULINO, "Engenheiro", 40000f);
+        Cliente c3 = new Cliente("Miguelzinho", "senha123", 25, Sexo.MASCULINO, "Soldador", 10000f);
+        Cliente c4 = new Cliente("Pedrao", "Diniz", 34, Sexo.MASCULINO, "Tecnico do senai", 20321f);
+        Cliente c5 = new Cliente("Renata", "asdf", 24, Sexo.FEMININO, "PED", 35000f);
+        Cliente c6 = new Cliente("Pedro", "minhasenha", 24, Sexo.MASCULINO, "PED", 2000f);
+
+        c1.abrirConta(1); // Conta Corrente
+        c2.abrirConta(2); // Conta Poupanca
+        c3.abrirConta(3); // Conta Investidor
+        c4.abrirConta(1); // Conta Corrente
+        c5.abrirConta(3); // Conta Corrente
+        c6.abrirConta(2); // Conta Poupanca
+
+        ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.TESOURO_SELIC, 500f);
+        ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.LCI_CAIXA, 600f);
+        ((ContaInvestidor) c3.getConta()).comprarRF(AtivosRF.LCI_CAIXA, 350f);
+        ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.TESLA, 5);
+        ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.AMAZON, 4);
+        ((ContaInvestidor) c3.getConta()).comprarAcao(Acoes.APPLE, 3);
+
+        ((ContaInvestidor) c5.getConta()).comprarAcao(Acoes.TESLA, 3);
+
+        salvaClientes();
     }
 
 }
