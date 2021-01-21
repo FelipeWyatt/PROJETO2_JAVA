@@ -31,7 +31,7 @@ public enum Acoes {
             float preco = Float.parseFloat(precoString.replace(",", "."));
             return preco;
         } catch (IOException erroConexao) {
-            System.out.println("Erro de conexão: " + erroConexao);
+            System.out.println("Erro de conexão com a internet: " + erroConexao);
             //erro.printStackTrace();
         } catch (NumberFormatException erroParseFloat){
             System.out.println("Erro formato do float: " + erroParseFloat);
