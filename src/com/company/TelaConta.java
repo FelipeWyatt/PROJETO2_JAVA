@@ -20,6 +20,7 @@ public class TelaConta extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS)); // Painel principal
         setResizable(false);
+        setTitle("Conta");
         setBackground(Color.white);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(5, 20, 20, 20));
         getContentPane().setBackground(Color.white);

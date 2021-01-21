@@ -135,6 +135,15 @@ public class TelaLogin extends JDialog {
 
         getContentPane().add(panelColunas);
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Se tela for fechada, finaliza o programa
+                super.windowClosed(e);
+                System.exit(0);
+            }
+        });
+
         pack();
         setLocation(500, 70);
         setVisible(true);

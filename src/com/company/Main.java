@@ -102,8 +102,8 @@ public class Main {
 
         try{
             // Recupera no arquivo a data da ultima vez que rendeu
-            BufferedReader arqData = new BufferedReader(new FileReader("ultima_vez_que_rendeu.txt"));
-            String[] ultimaVezQueRendeuString = arqData.readLine().split(",");
+            BufferedReader arqData = new BufferedReader(new FileReader("arquivos/ultima_vez_que_rendeu.txt"));
+            String[] ultimaVezQueRendeuString = arqData.readLine().split("/");
             arqData.close();
             int dia = Integer.parseInt(ultimaVezQueRendeuString[0]);
             int mes = Integer.parseInt(ultimaVezQueRendeuString[1]);
@@ -112,8 +112,8 @@ public class Main {
             // Obtem o objeto GregorianCalendar da ultima vez que rendeu que estava guardada no arquivo
             GregorianCalendar ultimaVezQueRendeu = new GregorianCalendar(ano, mes, dia);
 
-            int diasPassados = (int) Data.diasEntre(ultimaVezQueRendeu, dataAtual); //POR QUE LONG?
-            System.out.println(diasPassados);
+            int diasPassados = (int) Data.diasEntre(ultimaVezQueRendeu, dataAtual);
+
             if (diasPassados > 0){
                 // diasPassados = 0 se ja rendeu hoje
                 for(Cliente cliente : Admin.getClientes()){
@@ -127,9 +127,9 @@ public class Main {
             }
 
             // Salva a data atual para como a data da ultima vez que rendeu no mesmo arquivo em que a data foi resgatada
-            BufferedWriter arqDataSaida = new BufferedWriter(new FileWriter("ultima_vez_que_rendeu.txt"));
-            arqDataSaida.write(dataAtual.get(GregorianCalendar.DAY_OF_MONTH) + "," +
-                    dataAtual.get(GregorianCalendar.MONTH) + "," +
+            BufferedWriter arqDataSaida = new BufferedWriter(new FileWriter("arquivos/ultima_vez_que_rendeu.txt"));
+            arqDataSaida.write(dataAtual.get(GregorianCalendar.DAY_OF_MONTH) + "/" +
+                    dataAtual.get(GregorianCalendar.MONTH) + "/" +
                     dataAtual.get(GregorianCalendar.YEAR));
             arqDataSaida.flush();
             arqDataSaida.close();
@@ -151,7 +151,7 @@ public class Main {
 
     public static boolean salvaClientes(){
         // Guarda os dados de todos os clientes do sistema e consequentemente das contas e investimentos
-        String filename = "clientes.dat";
+        String filename = "arquivos/clientes.dat";
         try{
             ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
             for(Cliente c : Admin.getClientes()){
@@ -168,7 +168,7 @@ public class Main {
 
     public static boolean resgataClientes(){
         // Resgata os objetos Clientes guardados no Arquivo e associa à Admin.clientes
-        String filename = "clientes.dat";
+        String filename = "arquivos/clientes.dat";
         int maxIdCliente = 0, maxIdConta = 0;
         try{
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
@@ -185,11 +185,11 @@ public class Main {
             ContaBancaria.setNumContas(maxIdConta);
             return true;
         } catch (FileNotFoundException e) {
-            System.out.println("Erro 1 lendo arquivo clientes.dat");
+            System.out.println("Erro 1 lendo arquivo arquivos/clientes.dat");
         } catch (IOException e) {
-            System.out.println("Erro 2 lendo arquivo clientes.dat");
+            System.out.println("Erro 2 lendo arquivo arquivos/clientes.dat");
         } catch (ClassNotFoundException e) {
-            System.out.println("Erro 3 lendo arquivo clientes.dat");
+            System.out.println("Erro 3 lendo arquivo arquivos/clientes.dat");
         }
         return false;
     }
