@@ -2,19 +2,14 @@ package com.company;
 
 import javax.swing.*;
 import java.io.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class Main {
     // Tudo static porque Main nao e instanciada
-    public static GregorianCalendar dataAtual = new GregorianCalendar();
+    public static GregorianCalendar dataAtual = new GregorianCalendar(); // Data de hoje
 
     public static void main(String[] args) {
-        /*-------------------------------------------------------------------------------------------------------------
+        /*--------------------------------------------------------------------------------------------------------------
         O sistema contém os seguintes usuários pré-determinados, que podem sem utilizados para login:
         (id) -> (senha)
         1 -> abcd
@@ -29,7 +24,7 @@ public class Main {
             //setDataAtual(new GregorianCalendar(2021, 2, 21));
             rendeTudo();
 
-            TelaLogin telaLogin = new TelaLogin(); // Inicia TelaLogin, que eventualmente chama as outras telas
+            new TelaLogin(); // Inicia TelaLogin, que eventualmente chama as outras telas
 
         } else {
             // Caso não funcione resgatar os clientes pelo arquivo clientes.dat, pode-se reescrever o arquivo novamente
@@ -44,54 +39,6 @@ public class Main {
             }
             System.exit(0);
         }
-
-
-        // CÓDIGO PARA DEMONSTRAÇÃO DE FUNÇÕES
-        /*
-        //Novo Cliente:
-        Admin.novoCliente("Renata", "adbc", 24, Sexo.FEMININO, "PED", 3000f);
-        Cliente c5 = Admin.getClientes().get(4);
-        Cliente c6 = new Cliente("Pedro", "1senha3", 24, Sexo.MASCULINO, "PED", 2000f);
-
-        //Abrir Conta:
-        c5.abrirConta(1); // Conta Corrente
-        c6.abrirConta(2); // Conta Poupanca
-        System.out.println("\n*** Visualizando Objetos ***\n");
-        System.out.println(c5);
-        System.out.println(c6);
-
-        //Fechar Conta:
-        System.out.println("\n*** Fechando Conta ***\n");
-        c6.fecharConta();
-        System.out.println(c6);
-
-        //Desativa Cliente:
-        System.out.println("\n*** Metodos de Admin ***\n");
-        System.out.println("-> Admin.desativaCliente()");
-        Admin.desativaCliente(c5); // seta o status do cliente para false
-        System.out.println(c5); // Status estará como "Cliente inativo"
-
-        // Nao eh possivel depositar pois cliente inativo
-        System.out.println("-> c5 tenta depositar");
-        int valor = 10000;
-        if (c5.getConta().depositar(valor)) System.out.println("Deposito de R$" + valor + " realizado com sucesso!");
-        else System.out.println("Nao foi possivel fazer o deposito!");
-        System.out.println(c5); // Saldo permanecera igual, porque cliente esta inativo
-
-        //Ativa Cliente:
-        System.out.println("-> Admin.ativaCliente()");
-        Admin.ativaCliente(c5);// "Cliente ativo"
-
-        System.out.println("-> c5 tenta depositar");
-        valor = 1280;
-        if (c5.getConta().depositar(valor)) System.out.println("Deposito de R$" + valor + " realizado com sucesso!");
-        else System.out.println("Nao foi possivel fazer o deposito!");
-        System.out.println(c5); // Agora cliente esta ativo, entao Saldo = 5000 + 1280
-
-        //setDataAtual(new GregorianCalendar(2021, 2, 19));
-
-         */
-
     }
 
 
@@ -172,7 +119,7 @@ public class Main {
         int maxIdCliente = 0, maxIdConta = 0;
         try{
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
-            while(true){
+            while(true){ // Implementção de Serializable como feito em aula
                 Cliente c = (Cliente) input.readObject();
                 Admin.adicionaCliente(c);
                 if(c.getId() > maxIdCliente) maxIdCliente = c.getId();

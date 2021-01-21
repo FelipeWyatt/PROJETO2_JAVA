@@ -27,6 +27,7 @@ public class TelaConta extends JFrame {
         ImageIcon logo = new ImageIcon("imagens/Icone_moeda.png");
         setIconImage(logo.getImage());
 
+        // Título da tela
         String titulo = "Conta";
         if(contaCliente instanceof ContaCorrente) titulo = "Conta Corrente";
         if(contaCliente instanceof ContaPoupanca) titulo = "Conta Poupança";

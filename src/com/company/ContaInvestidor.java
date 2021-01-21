@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 
 public class ContaInvestidor extends ContaBancaria { // Tem acesso a investimentos
+    // Classe mãe ContaBancaria declara serialVersionUID
+
     private ArrayList<Investimento> investimentos;
 
     //METODO CONSTRUTOR

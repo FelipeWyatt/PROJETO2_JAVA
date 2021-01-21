@@ -1,6 +1,7 @@
 package com.company;
 
 public class ContaCorrente extends ContaBancaria { // Conta comum
+    // Classe mãe ContaBancaria declara serialVersionUID
 
     //METODO CONSTRUTOR
     public ContaCorrente (float saldo, Cliente dono) {

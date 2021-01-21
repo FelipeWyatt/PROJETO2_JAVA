@@ -144,6 +144,8 @@ public class TelaLogin extends JDialog {
             }
         });
 
+
+
         pack();
         setLocation(500, 70);
         setVisible(true);

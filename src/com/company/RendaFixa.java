@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 
 class RendaFixa extends Investimento { // Um tipo de investimento, entao e uma classe-filha de investimento
+	// Classe mãe Investimento declara serialVersionUID
+
 	// ATRIBUTOS
 	private AtivosRF ativo; //Ativo que sera comprado
 

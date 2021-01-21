@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 
 public class Acao extends Investimento {
-
+    // Classe mãe Investimento declara serialVersionUID
     private Acoes acao;
     private int quantidade;
     private float precoCompra;

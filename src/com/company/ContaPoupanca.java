@@ -1,6 +1,8 @@
 package com.company;
 
 public class ContaPoupanca extends ContaBancaria { // Rende diariamente a uma taxa fixa
+    // Classe mãe ContaBancaria declara serialVersionUID
+
     private static final float rendimentoDiario = 0.00007f; // 0.007%
 
     //METODO CONSTRUTOR
