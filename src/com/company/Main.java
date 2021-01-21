@@ -19,7 +19,7 @@ public class Main {
         5 -> asdf
         6 -> minhasenha
          -------------------------------------------------------------------------------------------------------------*/
-
+        
         if(resgataClientes()){
             //setDataAtual(new GregorianCalendar(2021, 2, 21));
             rendeTudo();
@@ -39,6 +39,50 @@ public class Main {
             }
             System.exit(0);
         }
+
+        /*
+        // TESTES DE FUNCIONALIDADES DO SISTEMA ALÉM DAS MOSTRADAS NA INTERFACE GRÁFICA
+        // ATENÇÃO: COMENTAR CÓDIGO ACIMA PARA REALIZAR OS TESTES
+
+        // Novo Cliente:
+        Admin.novoCliente("Antonio", "alfabeta", 34, Sexo.MASCULINO, "Professor", 75000f);
+        Cliente c7 = Admin.getClientes().get(0);
+        Cliente c8 = new Cliente("Bianca", "pi314", 22, Sexo.FEMININO, "Vendedora", 20000f);
+
+        // Abrir Conta:
+        c7.abrirConta(1); // Conta Corrente
+        c8.abrirConta(2); // Conta Poupanca
+        System.out.println("\n*** Visualizando Objetos ***\n");
+        System.out.println(c7);
+        System.out.println(c8);
+
+        // Fechar Conta:
+        System.out.println("\n*** Fechando Conta ***\n");
+        c8.fecharConta();
+        System.out.println(c8);
+
+        // Desativa Cliente:
+        System.out.println("\n*** Metodos de Admin ***\n");
+        System.out.println("-> Admin.desativaCliente()");
+        Admin.desativaCliente(c7); // seta o status do cliente para false
+        System.out.println(c7); // Status estará como "Cliente inativo"
+
+        // Não é possível depositar, pois cliente está inativo
+        System.out.println("-> c5 tenta depositar");
+        int valor = 10000;
+        if (c7.getConta().depositar(valor)) System.out.println("Deposito de R$" + valor + " realizado com sucesso!");
+        else System.out.println("Nao foi possivel fazer o deposito!");
+        System.out.println(c7); // Saldo permanecera igual, porque cliente esta inativo
+
+        //Ativa Cliente:
+        System.out.println("-> Admin.ativaCliente()");
+        Admin.ativaCliente(c7);// "Cliente ativo"
+        System.out.println("-> c5 tenta depositar");
+        valor = 1280;
+        if (c7.getConta().depositar(valor)) System.out.println("Deposito de R$" + valor + " realizado com sucesso!");
+        else System.out.println("Nao foi possivel fazer o deposito!");
+        System.out.println(c7); // Agora cliente está ativo, então Saldo = 5000 + 1280
+         */
     }
 
 
